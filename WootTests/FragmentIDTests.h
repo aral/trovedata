@@ -8,6 +8,6 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface WootIDTests : SenTestCase
+@interface FragmentIDTests : SenTestCase
 
 @end

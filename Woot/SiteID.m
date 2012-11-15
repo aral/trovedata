@@ -11,7 +11,7 @@
 //  Copyright (c) 2012 Aral Balkan. All rights reserved.
 //
 
-#import "TroveSiteID.h"
+#import "SiteID.h"
 
 #import "GetPrimaryMACAddress.c"
 #import <IOKit/IOKitLib.h>
@@ -19,7 +19,7 @@
 #import <IOKit/network/IONetworkInterface.h>
 #import <IOKit/network/IOEthernetController.h>
 
-@implementation TroveSiteID
+@implementation SiteID
 
 + (id)sharedInstance
 {

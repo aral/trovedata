@@ -6,15 +6,15 @@
 //  Copyright (c) 2012 Aral Balkan. All rights reserved.
 //
 
-#import "TroveSiteIDTests.h"
-#import "TroveSiteID.h"
+#import "SiteIDTests.h"
+#import "SiteID.h"
 
-@implementation TroveSiteIDTests
+@implementation SiteIDTests
 
 - (void)testMACAddress
 {
-    TroveSiteID *troveSiteId = [TroveSiteID sharedInstance];
-    NSString *macAddress = [troveSiteId MACAddress];
+    SiteID *siteID = [SiteID sharedInstance];
+    NSString *macAddress = [siteID MACAddress];
     
     STAssertTrue(macAddress.length == 12, @"MAC address length should be 12 characters.");
     STAssertFalse([macAddress isEqualToString: @"ERROR"], @"MAC address should not return error.");

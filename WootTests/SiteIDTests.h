@@ -8,6 +8,6 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface TroveSiteIDTests : SenTestCase
+@interface SiteIDTests : SenTestCase
 
 @end

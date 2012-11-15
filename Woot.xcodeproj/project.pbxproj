@@ -16,15 +16,14 @@
 		A7DAA3721653EC2700FCA19E /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7DAA3711653EC2700FCA19E /* SenTestingKit.framework */; };
 		A7DAA3731653EC2700FCA19E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7DAA3531653EC2700FCA19E /* Cocoa.framework */; };
 		A7DAA37B1653EC2700FCA19E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7DAA3791653EC2700FCA19E /* InfoPlist.strings */; };
-		A7DAA37E1653EC2700FCA19E /* WootTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA37D1653EC2700FCA19E /* WootTests.m */; };
-		A7DAA38A1654163700FCA19E /* WootAtom.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA3891654163700FCA19E /* WootAtom.m */; };
-		A7DAA38D1654165D00FCA19E /* WootID.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA38C1654165C00FCA19E /* WootID.m */; };
-		A7DAA3901654214500FCA19E /* WootSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA38F1654214500FCA19E /* WootSequence.m */; };
-		A7FF1E0C165515B900C60588 /* TroveSiteID.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF1E0B165515B900C60588 /* TroveSiteID.m */; };
+		A7DAA38A1654163700FCA19E /* Fragment.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA3891654163700FCA19E /* Fragment.m */; };
+		A7DAA38D1654165D00FCA19E /* FragmentID.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA38C1654165C00FCA19E /* FragmentID.m */; };
+		A7DAA3901654214500FCA19E /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA38F1654214500FCA19E /* Post.m */; };
+		A7FF1E0C165515B900C60588 /* SiteID.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF1E0B165515B900C60588 /* SiteID.m */; };
 		A7FF1E131655189900C60588 /* GetPrimaryMACAddress.c in Sources */ = {isa = PBXBuildFile; fileRef = A7FF1E121655189900C60588 /* GetPrimaryMACAddress.c */; };
 		A7FF1E1516551A5500C60588 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FF1E1416551A5500C60588 /* IOKit.framework */; };
-		A7FF1E18165525A600C60588 /* TroveSiteIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF1E17165525A600C60588 /* TroveSiteIDTests.m */; };
-		A7FF1E1B165528AB00C60588 /* WootIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF1E1A165528AB00C60588 /* WootIDTests.m */; };
+		A7FF1E18165525A600C60588 /* SiteIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF1E17165525A600C60588 /* SiteIDTests.m */; };
+		A7FF1E1B165528AB00C60588 /* FragmentIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF1E1A165528AB00C60588 /* FragmentIDTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,22 +54,20 @@
 		A7DAA3711653EC2700FCA19E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		A7DAA3781653EC2700FCA19E /* WootTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WootTests-Info.plist"; sourceTree = "<group>"; };
 		A7DAA37A1653EC2700FCA19E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A7DAA37C1653EC2700FCA19E /* WootTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WootTests.h; sourceTree = "<group>"; };
-		A7DAA37D1653EC2700FCA19E /* WootTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WootTests.m; sourceTree = "<group>"; };
-		A7DAA3881654163700FCA19E /* WootAtom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WootAtom.h; sourceTree = "<group>"; };
-		A7DAA3891654163700FCA19E /* WootAtom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WootAtom.m; sourceTree = "<group>"; };
-		A7DAA38B1654165C00FCA19E /* WootID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WootID.h; sourceTree = "<group>"; };
-		A7DAA38C1654165C00FCA19E /* WootID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WootID.m; sourceTree = "<group>"; };
-		A7DAA38E1654214500FCA19E /* WootSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WootSequence.h; sourceTree = "<group>"; };
-		A7DAA38F1654214500FCA19E /* WootSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WootSequence.m; sourceTree = "<group>"; };
-		A7FF1E0A165515B900C60588 /* TroveSiteID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TroveSiteID.h; sourceTree = "<group>"; };
-		A7FF1E0B165515B900C60588 /* TroveSiteID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TroveSiteID.m; sourceTree = "<group>"; };
+		A7DAA3881654163700FCA19E /* Fragment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fragment.h; sourceTree = "<group>"; };
+		A7DAA3891654163700FCA19E /* Fragment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fragment.m; sourceTree = "<group>"; };
+		A7DAA38B1654165C00FCA19E /* FragmentID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FragmentID.h; sourceTree = "<group>"; };
+		A7DAA38C1654165C00FCA19E /* FragmentID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FragmentID.m; sourceTree = "<group>"; };
+		A7DAA38E1654214500FCA19E /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
+		A7DAA38F1654214500FCA19E /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
+		A7FF1E0A165515B900C60588 /* SiteID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteID.h; sourceTree = "<group>"; };
+		A7FF1E0B165515B900C60588 /* SiteID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteID.m; sourceTree = "<group>"; };
 		A7FF1E121655189900C60588 /* GetPrimaryMACAddress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GetPrimaryMACAddress.c; sourceTree = "<group>"; };
 		A7FF1E1416551A5500C60588 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		A7FF1E16165525A600C60588 /* TroveSiteIDTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TroveSiteIDTests.h; sourceTree = "<group>"; };
-		A7FF1E17165525A600C60588 /* TroveSiteIDTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TroveSiteIDTests.m; sourceTree = "<group>"; };
-		A7FF1E19165528AB00C60588 /* WootIDTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WootIDTests.h; sourceTree = "<group>"; };
-		A7FF1E1A165528AB00C60588 /* WootIDTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WootIDTests.m; sourceTree = "<group>"; };
+		A7FF1E16165525A600C60588 /* SiteIDTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteIDTests.h; sourceTree = "<group>"; };
+		A7FF1E17165525A600C60588 /* SiteIDTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteIDTests.m; sourceTree = "<group>"; };
+		A7FF1E19165528AB00C60588 /* FragmentIDTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FragmentIDTests.h; sourceTree = "<group>"; };
+		A7FF1E1A165528AB00C60588 /* FragmentIDTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FragmentIDTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,12 +160,10 @@
 		A7DAA3761653EC2700FCA19E /* WootTests */ = {
 			isa = PBXGroup;
 			children = (
-				A7FF1E16165525A600C60588 /* TroveSiteIDTests.h */,
-				A7FF1E17165525A600C60588 /* TroveSiteIDTests.m */,
-				A7FF1E19165528AB00C60588 /* WootIDTests.h */,
-				A7FF1E1A165528AB00C60588 /* WootIDTests.m */,
-				A7DAA37C1653EC2700FCA19E /* WootTests.h */,
-				A7DAA37D1653EC2700FCA19E /* WootTests.m */,
+				A7FF1E16165525A600C60588 /* SiteIDTests.h */,
+				A7FF1E17165525A600C60588 /* SiteIDTests.m */,
+				A7FF1E19165528AB00C60588 /* FragmentIDTests.h */,
+				A7FF1E1A165528AB00C60588 /* FragmentIDTests.m */,
 				A7DAA3771653EC2700FCA19E /* Supporting Files */,
 			);
 			path = WootTests;
@@ -187,14 +182,14 @@
 			isa = PBXGroup;
 			children = (
 				A7FF1E121655189900C60588 /* GetPrimaryMACAddress.c */,
-				A7DAA3881654163700FCA19E /* WootAtom.h */,
-				A7DAA3891654163700FCA19E /* WootAtom.m */,
-				A7DAA38B1654165C00FCA19E /* WootID.h */,
-				A7DAA38C1654165C00FCA19E /* WootID.m */,
-				A7DAA38E1654214500FCA19E /* WootSequence.h */,
-				A7DAA38F1654214500FCA19E /* WootSequence.m */,
-				A7FF1E0A165515B900C60588 /* TroveSiteID.h */,
-				A7FF1E0B165515B900C60588 /* TroveSiteID.m */,
+				A7DAA3881654163700FCA19E /* Fragment.h */,
+				A7DAA3891654163700FCA19E /* Fragment.m */,
+				A7DAA38B1654165C00FCA19E /* FragmentID.h */,
+				A7DAA38C1654165C00FCA19E /* FragmentID.m */,
+				A7DAA38E1654214500FCA19E /* Post.h */,
+				A7DAA38F1654214500FCA19E /* Post.m */,
+				A7FF1E0A165515B900C60588 /* SiteID.h */,
+				A7FF1E0B165515B900C60588 /* SiteID.m */,
 			);
 			name = Woot;
 			sourceTree = "<group>";
@@ -309,10 +304,10 @@
 			files = (
 				A7DAA3601653EC2700FCA19E /* main.m in Sources */,
 				A7DAA3671653EC2700FCA19E /* AppDelegate.m in Sources */,
-				A7DAA38A1654163700FCA19E /* WootAtom.m in Sources */,
-				A7DAA38D1654165D00FCA19E /* WootID.m in Sources */,
-				A7DAA3901654214500FCA19E /* WootSequence.m in Sources */,
-				A7FF1E0C165515B900C60588 /* TroveSiteID.m in Sources */,
+				A7DAA38A1654163700FCA19E /* Fragment.m in Sources */,
+				A7DAA38D1654165D00FCA19E /* FragmentID.m in Sources */,
+				A7DAA3901654214500FCA19E /* Post.m in Sources */,
+				A7FF1E0C165515B900C60588 /* SiteID.m in Sources */,
 				A7FF1E131655189900C60588 /* GetPrimaryMACAddress.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,9 +316,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7DAA37E1653EC2700FCA19E /* WootTests.m in Sources */,
-				A7FF1E18165525A600C60588 /* TroveSiteIDTests.m in Sources */,
-				A7FF1E1B165528AB00C60588 /* WootIDTests.m in Sources */,
+				A7FF1E18165525A600C60588 /* SiteIDTests.m in Sources */,
+				A7FF1E1B165528AB00C60588 /* FragmentIDTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

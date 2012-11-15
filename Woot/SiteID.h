@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TroveSiteID : NSObject
+@interface SiteID : NSObject
 
 @property (nonatomic, strong) NSString *MACAddress;
 

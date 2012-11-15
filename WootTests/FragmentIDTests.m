@@ -6,15 +6,15 @@
 //  Copyright (c) 2012 Aral Balkan. All rights reserved.
 //
 
-#import "WootIDTests.h"
-#import "WootID.h"
+#import "FragmentIDTests.h"
+#import "FragmentID.h"
 
-@implementation WootIDTests
+@implementation FragmentIDTests
 
 -(void)testUniqueness
 {
-    WootID *id1 = [WootID nextID];
-    WootID *id2 = [WootID nextID];
+    FragmentID *id1 = [FragmentID nextID];
+    FragmentID *id2 = [FragmentID nextID];
     
     STAssertFalse([id1.stringValue isEqualToString:id2.stringValue], @"IDs should be unique");
     STAssertTrue(id2.localClock > id1.localClock, @"IDs should be in accending order");
