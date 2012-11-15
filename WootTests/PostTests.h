@@ -1,5 +1,5 @@
 //
-//  WootIDTests.h
+//  PostTests.h
 //  Woot
 //
 //  Created by Aral Balkan on 15/11/2012.
@@ -8,6 +8,6 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface FragmentIDTests : SenTestCase
+@interface PostTests : SenTestCase
 
 @end
