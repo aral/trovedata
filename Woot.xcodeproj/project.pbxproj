@@ -22,6 +22,7 @@
 		A7DAA38A1654163700FCA19E /* Row.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA3891654163700FCA19E /* Row.m */; };
 		A7DAA38D1654165D00FCA19E /* GloballyUniqueID.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA38C1654165C00FCA19E /* GloballyUniqueID.m */; };
 		A7DAA3901654214500FCA19E /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA38F1654214500FCA19E /* Post.m */; };
+		A7F49E971656F273009D2663 /* Fragment.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F49E961656F273009D2663 /* Fragment.m */; };
 		A7FF1E0C165515B900C60588 /* SiteID.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF1E0B165515B900C60588 /* SiteID.m */; };
 		A7FF1E131655189900C60588 /* GetPrimaryMACAddress.c in Sources */ = {isa = PBXBuildFile; fileRef = A7FF1E121655189900C60588 /* GetPrimaryMACAddress.c */; };
 		A7FF1E1516551A5500C60588 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FF1E1416551A5500C60588 /* IOKit.framework */; };
@@ -69,6 +70,8 @@
 		A7DAA38C1654165C00FCA19E /* GloballyUniqueID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GloballyUniqueID.m; sourceTree = "<group>"; };
 		A7DAA38E1654214500FCA19E /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
 		A7DAA38F1654214500FCA19E /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
+		A7F49E951656F273009D2663 /* Fragment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fragment.h; sourceTree = "<group>"; };
+		A7F49E961656F273009D2663 /* Fragment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fragment.m; sourceTree = "<group>"; };
 		A7FF1E0A165515B900C60588 /* SiteID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteID.h; sourceTree = "<group>"; };
 		A7FF1E0B165515B900C60588 /* SiteID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteID.m; sourceTree = "<group>"; };
 		A7FF1E121655189900C60588 /* GetPrimaryMACAddress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GetPrimaryMACAddress.c; sourceTree = "<group>"; };
@@ -211,6 +214,8 @@
 				A7DAA38F1654214500FCA19E /* Post.m */,
 				A7FF1E0A165515B900C60588 /* SiteID.h */,
 				A7FF1E0B165515B900C60588 /* SiteID.m */,
+				A7F49E951656F273009D2663 /* Fragment.h */,
+				A7F49E961656F273009D2663 /* Fragment.m */,
 			);
 			name = Trove;
 			sourceTree = "<group>";
@@ -332,6 +337,7 @@
 				A7FF1E131655189900C60588 /* GetPrimaryMACAddress.c in Sources */,
 				A70C1A271656792F00D619C7 /* InsertOperation.m in Sources */,
 				A70C1A2B16567A3800D619C7 /* BaseOperation.m in Sources */,
+				A7F49E971656F273009D2663 /* Fragment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
