@@ -13,14 +13,15 @@
 // Re-implemented here to test the private properties
 // (as I don't want to change my actual code just to test it.)
 //
-#import "FragmentID.h"
+#import "GloballyUniqueID.h"
+#import "Row.h"
 @interface Post ()
 @property (nonatomic, assign) NSUInteger localClock;
-@property (nonatomic, strong) FragmentID *firstFragmentID;
-@property (nonatomic, strong) FragmentID *lastFragmentID;
+@property (nonatomic, strong) Row *firstRow;
+@property (nonatomic, strong) Row *lastRow;
 @property (nonatomic, strong) NSString *siteIDString;
--(FragmentID *)nextFragmentID;
--(FragmentID *)fragmentIDWithLocalClock:(NSUInteger)localClock;
+-(GloballyUniqueID *)nextRowID;
+-(GloballyUniqueID *)rowIDWithLocalClock:(NSUInteger)localClock;
 @end
 
 @interface PostTests ()
@@ -41,18 +42,17 @@
 
 -(void)testFragmentIDOrder
 {
-    NSUInteger firstFragmentIDLocalClock = self.post.firstFragmentID.localClock;
-    NSUInteger lastFragmentIDLocalClock = self.post.lastFragmentID.localClock;
+    NSString *firstRowIDString = self.post.firstRow.rowID.stringValue;
+    NSString *lastRowIDString = self.post.lastRow.rowID.stringValue;
     
-    NSLog(@"First fragment ID local clock: %lu", firstFragmentIDLocalClock);
-    NSLog(@"Last fragment ID local clock: %lu", lastFragmentIDLocalClock);
+    NSLog(@"First row ID: %@", firstRowIDString);
+    NSLog(@"Last row ID: %@", lastRowIDString);
     
-    STAssertEquals(firstFragmentIDLocalClock, (NSUInteger)0, @"Local clock of first fragment ID in the post should be zero.");
-    STAssertEquals(lastFragmentIDLocalClock, NSUIntegerMax, @"Local clock of last fragment ID in the post should be %lu", NSUIntegerMax);
-    STAssertTrue(firstFragmentIDLocalClock < lastFragmentIDLocalClock, @"Local clock of first fragment ID in the post should be less than the local clock of the last fragment ID in the post.");
+    STAssertEqualObjects(firstRowIDString, @"0-0", @"First row ID string should always be '0-0'.");
+    STAssertEqualObjects(lastRowIDString, @"0-1", @"Last row ID string should always be '0-1'");
     
-    FragmentID *id1 = [self.post nextFragmentID];
-    FragmentID *id2 = [self.post nextFragmentID];
+    GloballyUniqueID *id1 = [self.post nextRowID];
+    GloballyUniqueID *id2 = [self.post nextRowID];
     
     STAssertTrue(id1.localClock < id2.localClock, @"Local clock of successive fragment IDs should be in ascending order.");
 }
