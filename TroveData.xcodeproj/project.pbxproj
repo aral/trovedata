@@ -47,22 +47,22 @@
 		A70C1A281656796C00D619C7 /* TroveOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TroveOperation.h; sourceTree = "<group>"; };
 		A70C1A2916567A3800D619C7 /* BaseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseOperation.h; sourceTree = "<group>"; };
 		A70C1A2A16567A3800D619C7 /* BaseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseOperation.m; sourceTree = "<group>"; };
-		A7DAA34F1653EC2700FCA19E /* Woot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Woot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7DAA34F1653EC2700FCA19E /* TroveData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TroveData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7DAA3531653EC2700FCA19E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		A7DAA3561653EC2700FCA19E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		A7DAA3571653EC2700FCA19E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A7DAA3581653EC2700FCA19E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		A7DAA35B1653EC2700FCA19E /* Woot-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Woot-Info.plist"; sourceTree = "<group>"; };
+		A7DAA35B1653EC2700FCA19E /* TroveData-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TroveData-Info.plist"; sourceTree = "<group>"; };
 		A7DAA35D1653EC2700FCA19E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A7DAA35F1653EC2700FCA19E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A7DAA3611653EC2700FCA19E /* Woot-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Woot-Prefix.pch"; sourceTree = "<group>"; };
+		A7DAA3611653EC2700FCA19E /* TroveData-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TroveData-Prefix.pch"; sourceTree = "<group>"; };
 		A7DAA3631653EC2700FCA19E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		A7DAA3651653EC2700FCA19E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A7DAA3661653EC2700FCA19E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		A7DAA3691653EC2700FCA19E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		A7DAA3701653EC2700FCA19E /* WootTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WootTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7DAA3701653EC2700FCA19E /* TroveDataTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TroveDataTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7DAA3711653EC2700FCA19E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		A7DAA3781653EC2700FCA19E /* WootTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WootTests-Info.plist"; sourceTree = "<group>"; };
+		A7DAA3781653EC2700FCA19E /* TroveDataTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TroveDataTests-Info.plist"; sourceTree = "<group>"; };
 		A7DAA37A1653EC2700FCA19E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A7DAA3881654163700FCA19E /* Row.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Row.h; sourceTree = "<group>"; };
 		A7DAA3891654163700FCA19E /* Row.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Row.m; sourceTree = "<group>"; };
@@ -128,8 +128,8 @@
 		A7DAA3501653EC2700FCA19E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A7DAA34F1653EC2700FCA19E /* Woot.app */,
-				A7DAA3701653EC2700FCA19E /* WootTests.octest */,
+				A7DAA34F1653EC2700FCA19E /* TroveData.app */,
+				A7DAA3701653EC2700FCA19E /* TroveDataTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -170,10 +170,10 @@
 		A7DAA35A1653EC2700FCA19E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A7DAA35B1653EC2700FCA19E /* Woot-Info.plist */,
+				A7DAA35B1653EC2700FCA19E /* TroveData-Info.plist */,
 				A7DAA35C1653EC2700FCA19E /* InfoPlist.strings */,
 				A7DAA35F1653EC2700FCA19E /* main.m */,
-				A7DAA3611653EC2700FCA19E /* Woot-Prefix.pch */,
+				A7DAA3611653EC2700FCA19E /* TroveData-Prefix.pch */,
 				A7DAA3621653EC2700FCA19E /* Credits.rtf */,
 			);
 			name = "Supporting Files";
@@ -195,7 +195,7 @@
 		A7DAA3771653EC2700FCA19E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A7DAA3781653EC2700FCA19E /* WootTests-Info.plist */,
+				A7DAA3781653EC2700FCA19E /* TroveDataTests-Info.plist */,
 				A7DAA3791653EC2700FCA19E /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -223,9 +223,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A7DAA34E1653EC2700FCA19E /* Woot */ = {
+		A7DAA34E1653EC2700FCA19E /* TroveData */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A7DAA3811653EC2700FCA19E /* Build configuration list for PBXNativeTarget "Woot" */;
+			buildConfigurationList = A7DAA3811653EC2700FCA19E /* Build configuration list for PBXNativeTarget "TroveData" */;
 			buildPhases = (
 				A7DAA34B1653EC2700FCA19E /* Sources */,
 				A7DAA34C1653EC2700FCA19E /* Frameworks */,
@@ -235,14 +235,14 @@
 			);
 			dependencies = (
 			);
-			name = Woot;
+			name = TroveData;
 			productName = Woot;
-			productReference = A7DAA34F1653EC2700FCA19E /* Woot.app */;
+			productReference = A7DAA34F1653EC2700FCA19E /* TroveData.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A7DAA36F1653EC2700FCA19E /* WootTests */ = {
+		A7DAA36F1653EC2700FCA19E /* TroveDataTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A7DAA3841653EC2700FCA19E /* Build configuration list for PBXNativeTarget "WootTests" */;
+			buildConfigurationList = A7DAA3841653EC2700FCA19E /* Build configuration list for PBXNativeTarget "TroveDataTests" */;
 			buildPhases = (
 				A7DAA36B1653EC2700FCA19E /* Sources */,
 				A7DAA36C1653EC2700FCA19E /* Frameworks */,
@@ -254,9 +254,9 @@
 			dependencies = (
 				A7DAA3751653EC2700FCA19E /* PBXTargetDependency */,
 			);
-			name = WootTests;
+			name = TroveDataTests;
 			productName = WootTests;
-			productReference = A7DAA3701653EC2700FCA19E /* WootTests.octest */;
+			productReference = A7DAA3701653EC2700FCA19E /* TroveDataTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -268,7 +268,7 @@
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Aral Balkan";
 			};
-			buildConfigurationList = A7DAA3491653EC2700FCA19E /* Build configuration list for PBXProject "Woot" */;
+			buildConfigurationList = A7DAA3491653EC2700FCA19E /* Build configuration list for PBXProject "TroveData" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -280,8 +280,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A7DAA34E1653EC2700FCA19E /* Woot */,
-				A7DAA36F1653EC2700FCA19E /* WootTests */,
+				A7DAA34E1653EC2700FCA19E /* TroveData */,
+				A7DAA36F1653EC2700FCA19E /* TroveDataTests */,
 			);
 		};
 /* End PBXProject section */
@@ -355,7 +355,7 @@
 /* Begin PBXTargetDependency section */
 		A7DAA3751653EC2700FCA19E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A7DAA34E1653EC2700FCA19E /* Woot */;
+			target = A7DAA34E1653EC2700FCA19E /* TroveData */;
 			targetProxy = A7DAA3741653EC2700FCA19E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -454,9 +454,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Woot/Woot-Prefix.pch";
-				INFOPLIST_FILE = "Woot/Woot-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Woot/TroveData-Prefix.pch";
+				INFOPLIST_FILE = "Woot/TroveData-Info.plist";
+				PRODUCT_NAME = TroveData;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -466,9 +466,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Woot/Woot-Prefix.pch";
-				INFOPLIST_FILE = "Woot/Woot-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Woot/TroveData-Prefix.pch";
+				INFOPLIST_FILE = "Woot/TroveData-Info.plist";
+				PRODUCT_NAME = TroveData;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -476,13 +476,13 @@
 		A7DAA3851653EC2700FCA19E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Woot.app/Contents/MacOS/Woot";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TroveData.app/Contents/MacOS/TroveData";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Woot/Woot-Prefix.pch";
-				INFOPLIST_FILE = "WootTests/WootTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Woot/TroveData-Prefix.pch";
+				INFOPLIST_FILE = "WootTests/TroveDataTests-Info.plist";
+				PRODUCT_NAME = TroveDataTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -491,13 +491,13 @@
 		A7DAA3861653EC2700FCA19E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Woot.app/Contents/MacOS/Woot";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TroveData.app/Contents/MacOS/TroveData";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Woot/Woot-Prefix.pch";
-				INFOPLIST_FILE = "WootTests/WootTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Woot/TroveData-Prefix.pch";
+				INFOPLIST_FILE = "WootTests/TroveDataTests-Info.plist";
+				PRODUCT_NAME = TroveDataTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -506,7 +506,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A7DAA3491653EC2700FCA19E /* Build configuration list for PBXProject "Woot" */ = {
+		A7DAA3491653EC2700FCA19E /* Build configuration list for PBXProject "TroveData" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A7DAA37F1653EC2700FCA19E /* Debug */,
@@ -515,7 +515,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A7DAA3811653EC2700FCA19E /* Build configuration list for PBXNativeTarget "Woot" */ = {
+		A7DAA3811653EC2700FCA19E /* Build configuration list for PBXNativeTarget "TroveData" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A7DAA3821653EC2700FCA19E /* Debug */,
@@ -524,7 +524,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A7DAA3841653EC2700FCA19E /* Build configuration list for PBXNativeTarget "WootTests" */ = {
+		A7DAA3841653EC2700FCA19E /* Build configuration list for PBXNativeTarget "TroveDataTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A7DAA3851653EC2700FCA19E /* Debug */,
