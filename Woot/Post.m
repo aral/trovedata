@@ -10,6 +10,7 @@
 #import "Row.h"
 #import "SiteID.h"
 #import "Fragment.h"
+#import "Operation.h"
 
 // These are just arbitrary constants. They may change based on perceived usage patterns.
 static const NSUInteger kInitialRowPoolCapacity = 100;
@@ -80,21 +81,25 @@ static const NSUInteger kInitialFragmentPoolCapacity = 100;
     Row *row = [Row rowWithContent:fragment rowID:rowID previousRowID:previousRowID nextRowID:nextRowID];
     self.rowPool[rowID.stringValue] = row;
     
-    // TODO: Check if the previous and next rows exist. If they don’t yet, create a pending integration and
-    // push it into the pendingIntegrationQueue.
     Row *previousRow = self.rowPool[previousRowID.stringValue];
     Row *nextRow = self.rowPool[nextRowID.stringValue];
     
-//   Since the create method will only be called locally (may need to change the name to reflect this better),
-//   there is no chance that the previous and next rows will not exist. Keeping this code commented out to
-//   remind me to do this check when I implement the remote row insertion method.
+//  Since the create method will only be called locally (may need to change the name to reflect this better),
+//  there is no chance that the previous and next rows will not exist. Keeping this code commented out to
+//  remind me to do this check when I implement the remote row insertion method.
+//
+//  TODO: Check if the previous and next rows exist. If they don’t yet, create a pending integration and
+//  push it into the pendingIntegrationQueue.
+//
 //    if (previousRow && nextRow)
 //    {
 //        // OK, both previous and next row exist, we can integrate this.
 //        // TODO
 //    }
     
-    // TODO: Create a new insert operation and add it to the history stack.
+    // TODO: Create a new insert operation and add it to the operation pool.
+    Operation *insertOperation = [Operation insertOperationWithRowID:rowID];
+//    [self.operationPool insertOp
     
     // TODO: Create and add a message to the broadcast queue.
     
