@@ -111,6 +111,7 @@ static const NSUInteger kInitialFragmentPoolCapacity = 100;
     [self.operationPool addObject:insertOperation];
     
     // Create and add a message to the broadcast queue.
+    // TODO: Broadcast the message.
     Message *message = [Message messageWithOperation:insertOperation row:row fragment:fragment];
     [self.broadcastQueue addObject:message];
     
