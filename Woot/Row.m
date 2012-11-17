@@ -11,6 +11,25 @@
 
 @implementation Row
 
++(id)rowWithContent:(id)content rowID:(GloballyUniqueID *)rowID previousRowID:(GloballyUniqueID *)previousRowID nextRowID:(GloballyUniqueID *)nextRowID
+{
+    return [[self alloc] initWithContent:content rowID:rowID previousRowID:previousRowID nextRowID:nextRowID];
+}
+
+-(id)initWithContent:(id)content rowID:(GloballyUniqueID *)rowID previousRowID:(GloballyUniqueID *)previousRowID nextRowID:(GloballyUniqueID *)nextRowID
+{
+    self = [super init];
+    if (self)
+    {
+        self.content = content;
+        self.rowID = rowID;
+        self.previousRowID = previousRowID;
+        self.nextRowID = nextRowID;
+        self.visibilityDegree = 1;
+    }
+    return self;
+}
+
 #pragma mark - Globally *constant* special rows with constant global IDs.
 
 //
