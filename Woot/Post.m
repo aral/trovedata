@@ -11,6 +11,7 @@
 #import "SiteID.h"
 #import "Fragment.h"
 #import "Operation.h"
+#import "Message.h"
 
 // These are just arbitrary constants. They may change based on perceived usage patterns.
 static const NSUInteger kInitialRowPoolCapacity = 100;
@@ -87,9 +88,6 @@ static const NSUInteger kInitialFragmentPoolCapacity = 100;
     Row *row = [Row rowWithContent:fragment rowID:rowID previousRowID:previousRowID nextRowID:nextRowID];
     self.rowPool[rowID.stringValue] = row;
     
-    Row *previousRow = self.rowPool[previousRowID.stringValue];
-    Row *nextRow = self.rowPool[nextRowID.stringValue];
-    
 //  Since the create method will only be called locally (may need to change the name to reflect this better),
 //  there is no chance that the previous and next rows will not exist. Keeping this code commented out to
 //  remind me to do this check when I implement the remote row insertion method.
@@ -97,17 +95,24 @@ static const NSUInteger kInitialFragmentPoolCapacity = 100;
 //  TODO: Check if the previous and next rows exist. If they don’t yet, create a pending integration and
 //  push it into the pendingIntegrationQueue.
 //
+//    Row *previousRow = self.rowPool[previousRowID.stringValue];
+//    Row *nextRow = self.rowPool[nextRowID.stringValue];
+//
 //    if (previousRow && nextRow)
 //    {
 //        // OK, both previous and next row exist, we can integrate this.
 //        // TODO
 //    }
+//
     
-    // TODO: Create a new insert operation and add it to the operation pool.
+    // Create a new insert operation and add it to the operation pool.
+    // TODO: Need to pass the previous ID and next ID 
     Operation *insertOperation = [Operation insertOperationWithID:[self nextOperationID] rowID:rowID];
     [self.operationPool addObject:insertOperation];
     
-    // TODO: Create and add a message to the broadcast queue.
+    // Create and add a message to the broadcast queue.
+    Message *message = [Message messageWithOperation:insertOperation row:row fragment:fragment];
+    [self.broadcastQueue addObject:message];
     
     return TRUE;
 }
