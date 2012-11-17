@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		A70C1A2216554EFC00D619C7 /* PostTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C1A2116554EFC00D619C7 /* PostTests.m */; };
-		A70C1A271656792F00D619C7 /* InsertOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C1A261656792F00D619C7 /* InsertOperation.m */; };
-		A70C1A2B16567A3800D619C7 /* BaseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C1A2A16567A3800D619C7 /* BaseOperation.m */; };
+		A77C5EA5165800420040A3B7 /* Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = A77C5EA4165800420040A3B7 /* Operation.m */; };
+		A77C5EA8165838D90040A3B7 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = A77C5EA7165838D90040A3B7 /* Message.m */; };
+		A77C5EAB1658495C0040A3B7 /* BaseRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A77C5EAA1658495C0040A3B7 /* BaseRow.m */; };
 		A7DAA3541653EC2700FCA19E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7DAA3531653EC2700FCA19E /* Cocoa.framework */; };
 		A7DAA35E1653EC2700FCA19E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7DAA35C1653EC2700FCA19E /* InfoPlist.strings */; };
 		A7DAA3601653EC2700FCA19E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DAA35F1653EC2700FCA19E /* main.m */; };
@@ -42,11 +43,12 @@
 /* Begin PBXFileReference section */
 		A70C1A2016554EFC00D619C7 /* PostTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTests.h; sourceTree = "<group>"; };
 		A70C1A2116554EFC00D619C7 /* PostTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTests.m; sourceTree = "<group>"; };
-		A70C1A251656792F00D619C7 /* InsertOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsertOperation.h; sourceTree = "<group>"; };
-		A70C1A261656792F00D619C7 /* InsertOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsertOperation.m; sourceTree = "<group>"; };
-		A70C1A281656796C00D619C7 /* TroveOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TroveOperation.h; sourceTree = "<group>"; };
-		A70C1A2916567A3800D619C7 /* BaseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseOperation.h; sourceTree = "<group>"; };
-		A70C1A2A16567A3800D619C7 /* BaseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseOperation.m; sourceTree = "<group>"; };
+		A77C5EA3165800420040A3B7 /* Operation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Operation.h; sourceTree = "<group>"; };
+		A77C5EA4165800420040A3B7 /* Operation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Operation.m; sourceTree = "<group>"; };
+		A77C5EA6165838D90040A3B7 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		A77C5EA7165838D90040A3B7 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		A77C5EA91658495C0040A3B7 /* BaseRow.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BaseRow.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
+		A77C5EAA1658495C0040A3B7 /* BaseRow.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BaseRow.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
 		A7DAA34F1653EC2700FCA19E /* TroveData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TroveData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7DAA3531653EC2700FCA19E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		A7DAA3561653EC2700FCA19E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -102,22 +104,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A70C1A241656790C00D619C7 /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				A70C1A251656792F00D619C7 /* InsertOperation.h */,
-				A70C1A261656792F00D619C7 /* InsertOperation.m */,
-				A70C1A281656796C00D619C7 /* TroveOperation.h */,
-				A70C1A2916567A3800D619C7 /* BaseOperation.h */,
-				A70C1A2A16567A3800D619C7 /* BaseOperation.m */,
-			);
-			name = Operations;
-			sourceTree = "<group>";
-		};
 		A7DAA3441653EC2700FCA19E = {
 			isa = PBXGroup;
 			children = (
-				A7FF1E1416551A5500C60588 /* IOKit.framework */,
 				A7DAA3591653EC2700FCA19E /* App */,
 				A7DAA3761653EC2700FCA19E /* TroveTests */,
 				A7DAA3521653EC2700FCA19E /* Frameworks */,
@@ -137,6 +126,7 @@
 		A7DAA3521653EC2700FCA19E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A7FF1E1416551A5500C60588 /* IOKit.framework */,
 				A7DAA3531653EC2700FCA19E /* Cocoa.framework */,
 				A7DAA3711653EC2700FCA19E /* SenTestingKit.framework */,
 				A7DAA3551653EC2700FCA19E /* Other Frameworks */,
@@ -204,8 +194,9 @@
 		A7DAA387165415C300FCA19E /* Trove */ = {
 			isa = PBXGroup;
 			children = (
-				A70C1A241656790C00D619C7 /* Operations */,
 				A7FF1E121655189900C60588 /* GetPrimaryMACAddress.c */,
+				A77C5EA91658495C0040A3B7 /* BaseRow.h */,
+				A77C5EAA1658495C0040A3B7 /* BaseRow.m */,
 				A7DAA3881654163700FCA19E /* Row.h */,
 				A7DAA3891654163700FCA19E /* Row.m */,
 				A7DAA38B1654165C00FCA19E /* GloballyUniqueID.h */,
@@ -216,6 +207,10 @@
 				A7FF1E0B165515B900C60588 /* SiteID.m */,
 				A7F49E951656F273009D2663 /* Fragment.h */,
 				A7F49E961656F273009D2663 /* Fragment.m */,
+				A77C5EA3165800420040A3B7 /* Operation.h */,
+				A77C5EA4165800420040A3B7 /* Operation.m */,
+				A77C5EA6165838D90040A3B7 /* Message.h */,
+				A77C5EA7165838D90040A3B7 /* Message.m */,
 			);
 			name = Trove;
 			sourceTree = "<group>";
@@ -335,9 +330,10 @@
 				A7DAA3901654214500FCA19E /* Post.m in Sources */,
 				A7FF1E0C165515B900C60588 /* SiteID.m in Sources */,
 				A7FF1E131655189900C60588 /* GetPrimaryMACAddress.c in Sources */,
-				A70C1A271656792F00D619C7 /* InsertOperation.m in Sources */,
-				A70C1A2B16567A3800D619C7 /* BaseOperation.m in Sources */,
 				A7F49E971656F273009D2663 /* Fragment.m in Sources */,
+				A77C5EA5165800420040A3B7 /* Operation.m in Sources */,
+				A77C5EA8165838D90040A3B7 /* Message.m in Sources */,
+				A77C5EAB1658495C0040A3B7 /* BaseRow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

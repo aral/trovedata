@@ -11,9 +11,10 @@
 #import "GloballyUniqueID.h"
 
 typedef enum {
-    FragmentTypeHeading,
-    FragmentTypeText,
-    FragmentTypeTweet
+    FragmentTypeHeading = 1,
+    FragmentTypeText = 2,
+    FragmentTypeImage = 3,
+    FragmentTypeTweet = 4
 } FragmentType;
 
 @interface Fragment : NSObject

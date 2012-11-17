@@ -13,7 +13,7 @@
 
 // These are just arbitrary constants. They may change based on perceived usage patterns.
 static const NSUInteger kInitialRowPoolCapacity = 100;
-static const NSUInteger kInitialHistoryStackCapacity = 100;
+static const NSUInteger kInitialOperationPoolCapacity = 100;
 static const NSUInteger kInitialBroadcastQueueCapacity = 100;
 static const NSUInteger kInitialPendingIntegrationQueueCapacity = 100;
 static const NSUInteger kInitialFragmentPoolCapacity = 100;
@@ -26,7 +26,7 @@ static const NSUInteger kInitialFragmentPoolCapacity = 100;
 
 // Stacks
 @property (nonatomic, strong) NSMutableDictionary *rowPool;
-@property (nonatomic, strong) NSMutableArray *historyStack;
+@property (nonatomic, strong) NSMutableArray *operationPool;
 @property (nonatomic, strong) NSMutableArray *broadcastQueue;
 @property (nonatomic, strong) NSMutableArray *pendingIntegrationQueue;
 @property (nonatomic, strong) NSMutableDictionary *fragmentPool;
@@ -48,13 +48,13 @@ static const NSUInteger kInitialFragmentPoolCapacity = 100;
         
         // These are constant on every post, user, device, etc. and used to
         // mark and check for the beginning and end of a post.
-        self.firstRow = [Row firstRow];
-        self.lastRow = [Row lastRow];
+        self.firstRow = [Row first];
+        self.lastRow = [Row last];
         
         // Create the row stack, history stack, broadcast queue, and pending integration queue for this document.
         self.rowPool = [NSMutableDictionary dictionaryWithCapacity:kInitialRowPoolCapacity];
 
-        self.historyStack = [NSMutableArray arrayWithCapacity:kInitialHistoryStackCapacity];
+        self.operationPool = [NSMutableArray arrayWithCapacity:kInitialOperationPoolCapacity];
         self.historyCursor = 0;
         
         self.broadcastQueue = [NSMutableArray arrayWithCapacity:kInitialBroadcastQueueCapacity];
