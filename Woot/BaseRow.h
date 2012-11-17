@@ -12,7 +12,9 @@
 
 @interface BaseRow : NSObject
 
-@property (nonatomic, strong) GloballyUniqueID *rowID;
+@property (nonatomic, strong) GloballyUniqueID *selfID;
+@property (nonatomic, strong) GloballyUniqueID *previousID;
+@property (nonatomic, strong) GloballyUniqueID *nextID;
 
 +(id)first;
 +(id)last;

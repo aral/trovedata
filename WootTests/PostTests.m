@@ -16,7 +16,7 @@
 #import "GloballyUniqueID.h"
 #import "Row.h"
 @interface Post ()
-@property (nonatomic, assign) NSUInteger localClock;
+@property (nonatomic, assign) NSUInteger localClockForRows;
 @property (nonatomic, strong) Row *firstRow;
 @property (nonatomic, strong) Row *lastRow;
 @property (nonatomic, strong) NSString *siteIDString;
@@ -42,8 +42,8 @@
 
 -(void)testFragmentIDOrder
 {
-    NSString *firstRowIDString = self.post.firstRow.rowID.stringValue;
-    NSString *lastRowIDString = self.post.lastRow.rowID.stringValue;
+    NSString *firstRowIDString = self.post.firstRow.selfID.stringValue;
+    NSString *lastRowIDString = self.post.lastRow.selfID.stringValue;
     
     NSLog(@"First row ID: %@", firstRowIDString);
     NSLog(@"Last row ID: %@", lastRowIDString);

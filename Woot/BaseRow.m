@@ -25,7 +25,7 @@
     
     if (firstRow == nil) {
         firstRow = [self new];
-        firstRow.rowID = [GloballyUniqueID idWithGloballyUniqueIDString:@"0-0"];
+        firstRow.selfID = [GloballyUniqueID idWithGloballyUniqueIDString:@"0-0"];
     }
     
     return firstRow;
@@ -36,7 +36,7 @@
     static BaseRow *lastRow = nil;
     if (lastRow == nil) {
         lastRow = [self new];
-        lastRow.rowID = [GloballyUniqueID idWithGloballyUniqueIDString:@"0-1"];
+        lastRow.selfID = [GloballyUniqueID idWithGloballyUniqueIDString:@"0-1"];
     }
     
     return lastRow;

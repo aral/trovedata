@@ -20,9 +20,12 @@ static const NSUInteger kInitialPendingIntegrationQueueCapacity = 100;
 static const NSUInteger kInitialFragmentPoolCapacity = 100;
 
 @interface Post ()
-@property (nonatomic, assign) NSUInteger localClock;
+@property (nonatomic, assign) NSUInteger localClockForRows;
+@property (nonatomic, assign) NSUInteger localClockForOperations;
 @property (nonatomic, strong) Row *firstRow;
 @property (nonatomic, strong) Row *lastRow;
+@property (nonatomic, strong) Operation *firstOperation;
+@property (nonatomic, strong) Operation *lastOperation;
 @property (nonatomic, strong) NSString *siteIDString;
 
 // Stacks
@@ -45,12 +48,15 @@ static const NSUInteger kInitialFragmentPoolCapacity = 100;
     self = [super init];
     if (self) {
         self.siteIDString = [[SiteID sharedInstance] stringValue];
-        self.localClock = 0;
+        self.localClockForRows = 0;
         
         // These are constant on every post, user, device, etc. and used to
         // mark and check for the beginning and end of a post.
         self.firstRow = [Row first];
         self.lastRow = [Row last];
+        
+        self.firstOperation = [Operation first];
+        self.lastOperation = [Operation last];
         
         // Create the row stack, history stack, broadcast queue, and pending integration queue for this document.
         self.rowPool = [NSMutableDictionary dictionaryWithCapacity:kInitialRowPoolCapacity];
@@ -98,20 +104,37 @@ static const NSUInteger kInitialFragmentPoolCapacity = 100;
 //    }
     
     // TODO: Create a new insert operation and add it to the operation pool.
-    Operation *insertOperation = [Operation insertOperationWithRowID:rowID];
-//    [self.operationPool insertOp
+    Operation *insertOperation = [Operation insertOperationWithID:[self nextOperationID] rowID:rowID];
+    [self.operationPool addObject:insertOperation];
     
     // TODO: Create and add a message to the broadcast queue.
     
     return TRUE;
 }
 
+// TODO: Refactor — there is duplication between op IDs and row IDs.
+#pragma mark - Operation ID management
+
+-(GloballyUniqueID *)nextOperationID
+{
+    self.localClockForOperations++;
+    GloballyUniqueID *operationID = [GloballyUniqueID idWithSiteIDString:self.siteIDString localClock:self.localClockForOperations];
+    return operationID;
+}
+
+-(GloballyUniqueID *)operationIDWithLocalClock:(NSUInteger)localClock
+{
+    GloballyUniqueID *operationID = [GloballyUniqueID idWithSiteIDString:self.siteIDString localClock:localClock];
+    return operationID;
+}
+
+
 #pragma mark - Row ID management
 
 -(GloballyUniqueID *)nextRowID
 {
-    self.localClock++;
-    GloballyUniqueID *rowID = [GloballyUniqueID idWithSiteIDString:self.siteIDString localClock:self.localClock];
+    self.localClockForRows++;
+    GloballyUniqueID *rowID = [GloballyUniqueID idWithSiteIDString:self.siteIDString localClock:self.localClockForRows];
     return rowID;
 }
 

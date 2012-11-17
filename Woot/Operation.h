@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BaseRow.h"
 
 @class GloballyUniqueID;
 
@@ -18,18 +19,18 @@ typedef enum {
     OperationTypeRedo = 5
 } OperationType;
 
-@interface Operation : NSObject
-@property (nonatomic, strong) GloballyUniqueID *opID;
+@interface Operation : BaseRow
 @property (nonatomic, assign) OperationType type;
-@property (nonatomic, strong) GloballyUniqueID *rowID;
+@property (nonatomic, strong) GloballyUniqueID *selfID;
 @property (nonatomic, strong) GloballyUniqueID *targetOpID;
+@property (nonatomic, strong) GloballyUniqueID *rowID;
 @property (nonatomic, strong) GloballyUniqueID *targetRowID;
 
-+(id)insertOperationWithRowID:(GloballyUniqueID *)rowID;
-+(id)deleteOperationWithRowID:(GloballyUniqueID *)rowID;
-+(id)moveOperationWithRowID:(GloballyUniqueID *)rowID targetRowID:(GloballyUniqueID *)targetRowID;
-+(id)undoOperationWithTargetOperationID:(GloballyUniqueID *)targetOpID;
-+(id)redoOperationWithTargetOperationID:(GloballyUniqueID *)targetOpID;
++(id)insertOperationWithID:(GloballyUniqueID *)opID rowID:(GloballyUniqueID *)rowID;
++(id)deleteOperationWithID:(GloballyUniqueID *)opID rowID:(GloballyUniqueID *)rowID;
++(id)moveOperationWithID:(GloballyUniqueID *)opID rowID:(GloballyUniqueID *)rowID targetRowID:(GloballyUniqueID *)targetRowID;
++(id)undoOperationWithID:(GloballyUniqueID *)opID targetOperationID:(GloballyUniqueID *)targetOpID;
++(id)redoOperationWithID:(GloballyUniqueID *)opID targetOperationID:(GloballyUniqueID *)targetOpID;
 
 // Designated initialiser
 -(id)initWithID:(GloballyUniqueID *)opID type:(OperationType)type rowID:(GloballyUniqueID *)rowID targetOperationID:(GloballyUniqueID *)targetOpID targetRowID:(GloballyUniqueID *)targetRowID;

@@ -14,8 +14,6 @@
 @interface Row : BaseRow
 
 @property (nonatomic, strong) id content;
-@property (nonatomic, strong) GloballyUniqueID *previousRowID;
-@property (nonatomic, strong) GloballyUniqueID *nextRowID;
 @property (nonatomic, assign) NSInteger visibilityDegree;
 
 

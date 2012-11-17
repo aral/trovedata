@@ -22,9 +22,9 @@
     if (self)
     {
         self.content = content;
-        self.rowID = rowID;
-        self.previousRowID = previousRowID;
-        self.nextRowID = nextRowID;
+        self.selfID = rowID;
+        self.previousID = previousRowID;
+        self.nextID = nextRowID;
         self.visibilityDegree = 1;
     }
     return self;

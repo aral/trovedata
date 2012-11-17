@@ -43,10 +43,9 @@
     
     if (self)
     {
-        self.opID = opID;
+        self.selfID = opID;
         self.type = type;
         self.rowID = rowID;
-        self.opID = opID;
         self.targetRowID = targetRowID;
     }
     
