@@ -72,22 +72,47 @@ static const NSUInteger kInitialFragmentPoolCapacity = 100;
     return self;
 }
 
-#pragma mark - Operations
+#pragma mark - Local Operations
 
--(BOOL)createNewRowForFragmentWithID:(GloballyUniqueID *)fragmentID betweenRowWithID:(GloballyUniqueID *)previousRowID andRowWithID:(GloballyUniqueID *)nextRowID
+//
+// Inserting a fragment involves creating a row and insertOperation which are added to the
+// row and operation pools of the post and the creation of a message that contains the
+// fragment ID, row ID, and operation ID to be communicated to be persisted and broadcast to all clients.
+//
+-(BOOL)insertFragmentWithID:(GloballyUniqueID *)fragmentID betweenRowWithID:(GloballyUniqueID *)previousRowID andRowWithID:(GloballyUniqueID *)nextRowID
 {
     // Get the fragment object.
     Fragment *fragment = self.fragmentPool[fragmentID];
     if (fragment == nil) {
+        // This should never happen.
         NSLog(@"Error: cannot insert fragment with ID: %@. Fragment not found.", fragmentID);
         return FALSE;
     }
+    
+    // TODO: Based on the type of the fragment, may need to upload media, etc.
     
     // Create the new row and add it to the row pool.
     GloballyUniqueID *rowID = [self nextRowID];
     Row *row = [Row rowWithContent:fragment rowID:rowID previousRowID:previousRowID nextRowID:nextRowID];
     self.rowPool[rowID.stringValue] = row;
+        
+    // Create a new insert operation and add it to the operation pool.
+    // TODO: Need to pass the previous ID and next ID 
+    Operation *insertOperation = [Operation insertOperationWithID:[self nextOperationID] rowID:rowID];
+    [self.operationPool addObject:insertOperation];
     
+    // Create and add a message to the broadcast queue.
+    // TODO: Broadcast the message.
+    Message *message = [Message messageWithOperation:insertOperation row:row fragment:fragment];
+    [self.broadcastQueue addObject:message];
+    
+    return TRUE;
+}
+
+//
+//  Integrate method.
+//  =================
+//
 //  Since the create method will only be called locally (may need to change the name to reflect this better),
 //  there is no chance that the previous and next rows will not exist. Keeping this code commented out to
 //  remind me to do this check when I implement the remote row insertion method.
@@ -104,19 +129,7 @@ static const NSUInteger kInitialFragmentPoolCapacity = 100;
 //        // TODO
 //    }
 //
-    
-    // Create a new insert operation and add it to the operation pool.
-    // TODO: Need to pass the previous ID and next ID 
-    Operation *insertOperation = [Operation insertOperationWithID:[self nextOperationID] rowID:rowID];
-    [self.operationPool addObject:insertOperation];
-    
-    // Create and add a message to the broadcast queue.
-    // TODO: Broadcast the message.
-    Message *message = [Message messageWithOperation:insertOperation row:row fragment:fragment];
-    [self.broadcastQueue addObject:message];
-    
-    return TRUE;
-}
+
 
 // TODO: Refactor — there is duplication between op IDs and row IDs.
 #pragma mark - Operation ID management
