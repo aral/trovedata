@@ -66,10 +66,10 @@
             printf("Error: GetMACAddress returned 0x%08x\n", kernResult);
             return @"ERROR";
         }
-		else {
-			printf("This system's built-in MAC address is %02x:%02x:%02x:%02x:%02x:%02x.\n",
-                   MACAddress[0], MACAddress[1], MACAddress[2], MACAddress[3], MACAddress[4], MACAddress[5]);
-		}
+//		else {
+//			printf("This system's built-in MAC address is %02x:%02x:%02x:%02x:%02x:%02x.\n",
+//                   MACAddress[0], MACAddress[1], MACAddress[2], MACAddress[3], MACAddress[4], MACAddress[5]);
+//		}
     }
     
     (void) IOObjectRelease(intfIterator);	// Release the iterator.

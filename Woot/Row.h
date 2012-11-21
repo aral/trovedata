@@ -5,7 +5,8 @@
 
 #import <Foundation/Foundation.h>
 
-//static NSString const *
+static const NSInteger kRowInvisible = 0;
+static const NSInteger kRowVisible = 1;
 
 @class GloballyUniqueID;
 

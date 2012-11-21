@@ -23,6 +23,7 @@ typedef enum {
 @property (nonatomic, assign) FragmentType type;
 @property (nonatomic, strong) NSDictionary *data;
 
++(id)fragmentWithType:(FragmentType)fragmentType id:(GloballyUniqueID *)fragmentID data:(NSDictionary *)data;
 -(id)initFragmentWithType:(FragmentType)fragmentType id:(GloballyUniqueID *)fragmentID data:(NSDictionary *)data;
 
 @end
