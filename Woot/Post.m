@@ -19,6 +19,7 @@ static const NSUInteger kInitialOperationPoolCapacity = 100;
 static const NSUInteger kInitialFragmentPoolCapacity = 100;
 
 static const NSUInteger kInitialVisibleRowStackCapacity = 100;
+static const NSUInteger kInitialOrderedRowStackCapactity = 100;
 static const NSUInteger kInitialBroadcastQueueCapacity = 100;
 static const NSUInteger kInitialPendingIntegrationQueueCapacity = 100;
 
@@ -50,6 +51,7 @@ typedef enum {
 @property (nonatomic, strong) NSMutableDictionary *fragmentPool;
 
 // Stacks
+@property (nonatomic, strong) NSMutableArray *orderedRowStack;
 @property (nonatomic, strong) NSMutableArray *visibleRowStack;
 @property (nonatomic, strong) NSMutableArray *broadcastQueue;
 @property (nonatomic, strong) NSMutableArray *pendingIntegrationQueue;
@@ -96,6 +98,7 @@ typedef enum {
 
         self.fragmentPool = [NSMutableDictionary dictionaryWithCapacity:kInitialFragmentPoolCapacity];
         
+        self.orderedRowStack = [NSMutableArray arrayWithCapacity:kInitialOrderedRowStackCapactity];
         self.visibleRowStack = [NSMutableArray arrayWithCapacity:kInitialVisibleRowStackCapacity];
         self.broadcastQueue = [NSMutableArray arrayWithCapacity:kInitialBroadcastQueueCapacity];
         self.pendingIntegrationQueue = [NSMutableArray arrayWithCapacity:kInitialPendingIntegrationQueueCapacity];
@@ -106,41 +109,97 @@ typedef enum {
 
 #pragma mark - Local Operations
 
--(void)render
+-(BOOL)isID:(GloballyUniqueID *)firstID greaterThanID:(GloballyUniqueID *)secondID
 {
-    NSLog(@"Rendering…");
-    
-    // Clear the visible view stack
-    [self.visibleRowStack removeAllObjects];
+    BOOL result;
+    if ([firstID.siteID isEqualTo:secondID.siteID])
+    {
+        result = firstID.localClock;
+    }
+    else
+    {
+        result = firstID.siteID > secondID.siteID;
+    }
+    return result;
+}
 
-    // Iterate over all rows starting with the first and add the
-    // visible ones to the visible row stack.
-    Row *currentRow = self.firstRow;
-    while (![currentRow.nextID.stringValue isEqualToString:self.lastRow.selfID.stringValue]) {
+// Recursive method that integrates the row into the visible
+-(void)integrateRow:(Row *)row betweenID:(GloballyUniqueID *)previousID andID:(GloballyUniqueID *)nextID
+{    
+    // (Cannot be larger than the number of rows in the ordered row stack)    
+    NSInteger indexOfPreviousRowInOrderedRowStack = [self.orderedRowStack indexOfObject:row.previousID];
+    NSInteger indexOfNextRowInOrderedRowStack = [self.orderedRowStack indexOfObject:row.nextID];
+    
+    NSRange rangeOfInterest = NSRangeFromString([NSString stringWithFormat:@"%lu, %lu", indexOfPreviousRowInOrderedRowStack, indexOfNextRowInOrderedRowStack]);
+    
+    // Create the list of rows that initially interest us for use in ordering.
+    // (In the WOOT research paper, this list is denoated by S'.)
+    NSArray *rowsBetweenPreviousRowAndNextRow = [self.orderedRowStack subarrayWithRange:rangeOfInterest];
+    
+    // TODO: Check if the S' array is empty. And if so, insert the character between previousID and nextID
+    NSUInteger numberOfrowsBetweenPreviousRowAndNextRow = rowsBetweenPreviousRowAndNextRow.count;
+    if (numberOfrowsBetweenPreviousRowAndNextRow == 0)
+    {
+        // Insert row into the ordered row stack.
+        Row *rowToInsertRowAt = self.rowPool[nextID];
+        NSUInteger indexToInsertTheRow = [self.orderedRowStack indexOfObject:rowToInsertRowAt];
+        [self.orderedRowStack insertObject:row atIndex:indexToInsertTheRow];
         
-        NSLog(@"Current row: %@", currentRow);
-        NSLog(@"currentRow.visibilityDegree = %lu", currentRow.visibilityDegree);
+        NSLog(@"Inserted row %@ at index: %lu", row, indexToInsertTheRow);
+        NSLog(@"Ordered row stack: %@", self.orderedRowStack);
         
-        if (currentRow.visibilityDegree == kRowVisible)
+        return;
+    }
+    
+    // (In the WOOT research paper, this array is denoted by L.)
+    // The +2 is to make room for the previousID and nextID which span
+    // the filtered list as per the algorithm in the WOOT research paper.
+    NSMutableArray *filteredArray = [NSMutableArray arrayWithCapacity:rowsBetweenPreviousRowAndNextRow.count + 2];
+    
+    for (Row *currentRow in rowsBetweenPreviousRowAndNextRow)
+    {
+        NSUInteger indexOfCurrentPreviousRowInOrderedRowStack = [self.orderedRowStack indexOfObject:currentRow.previousID];
+        NSUInteger indexOfCurrentNextRowInOrderedRowStack = [self.orderedRowStack indexOfObject:currentRow.nextID];
+        
+        // Only include the current row if its previous row ID is less than or equal to the row-being-integrated’s
+        // previous row ID and if its next row ID is greater than or equal to the row‐being‐integrated’s next row ID. 
+        BOOL previousOrderingCheck = indexOfCurrentPreviousRowInOrderedRowStack <= indexOfPreviousRowInOrderedRowStack;
+        BOOL nextOrderingCheck = indexOfCurrentNextRowInOrderedRowStack >= indexOfNextRowInOrderedRowStack;
+        
+        // This row statisfies the ordering rules. Add it to the resulting array.
+        if (previousOrderingCheck && nextOrderingCheck)
         {
-            NSLog(@"Current row visible, adding to visible row stack…");
-            [self.visibleRowStack addObject:currentRow];
+            [filteredArray addObject:currentRow];
         }
         
-        currentRow = self.rowPool[currentRow.nextID];
+        // Check for ID ordering in the latest list
+        // (None of the examples in the WOOT research paper end up with an L that has more
+        // than one element but I can see how this can happen so I’m implementing this as per the
+        // algorithm in the original paper.)
+        // TODO: Create test case for when there is more than one row.
+        NSUInteger i = 0;
+        NSUInteger indexOfLastRowInArrayAfterInitialOrdering = filteredArray.count-1;
+        GloballyUniqueID *idToCheck;
+        while (i < indexOfLastRowInArrayAfterInitialOrdering)
+        {
+            idToCheck = ((Row *)filteredArray[i]).selfID;
+            
+            if (![self isID:row.selfID greaterThanID:idToCheck]) {
+                break;
+            }
+            
+            i++;
+        }
         
-        NSAssert(currentRow !=  nil, @"Current row should not be nil.");
+        GloballyUniqueID *newPreviousID = ((Row *)filteredArray[i-1]).selfID;
+        GloballyUniqueID *newNextID = ((Row *)filteredArray[i]).selfID;
         
-        NSLog(@"New current row: %@", currentRow);
+        // Recurse to integrate the new array after initial ordering
+        [self integrateRow:row betweenID:newPreviousID andID:newNextID];
     }
     
-    // If we are in stream mode, reverse the visible view stack.
-    if (self.postView == PostViewStream) {
-        // If in stream view, reverse the list.
-        self.visibleRowStack = [[[self.visibleRowStack reverseObjectEnumerator] allObjects] mutableCopy];
-    }
     
-    NSLog(@"Visible row stack after render: %@", self.visibleRowStack);
+    
 }
 
 // Adds row to the row pool
@@ -158,11 +217,8 @@ typedef enum {
     
     NSLog(@"Inserted row with ID %@ into the row pool.", row.selfID.stringValue);
     
-    if (row.visibilityDegree == kRowVisible)
-    {
-        NSLog(@"Row is visible, rendering visible view stack");
-        [self render];
-    }
+    // Integrate the row into the ordered row list
+    [self integrateRow:row betweenID:row.previousID andID:row.nextID];
     
     return TRUE;
 }
