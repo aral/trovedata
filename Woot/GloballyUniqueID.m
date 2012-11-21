@@ -64,4 +64,9 @@
     return str;
 }
 
+-(NSString *)description
+{
+    return [self stringValue];
+}
+
 @end

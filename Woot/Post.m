@@ -92,6 +92,8 @@ typedef enum {
         
         // Create the row stack, history stack, broadcast queue, and pending integration queue for this document.
         self.rowPool = [NSMutableDictionary dictionaryWithCapacity:kInitialRowPoolCapacity];
+        self.rowPool[self.firstRow.selfID.stringValue] = self.firstRow;
+        self.rowPool[self.lastRow.selfID.stringValue] = self.lastRow;
         
         self.operationPool = [NSMutableDictionary dictionaryWithCapacity:kInitialOperationPoolCapacity];
         self.historyCursor = 0;
@@ -99,6 +101,10 @@ typedef enum {
         self.fragmentPool = [NSMutableDictionary dictionaryWithCapacity:kInitialFragmentPoolCapacity];
         
         self.orderedRowStack = [NSMutableArray arrayWithCapacity:kInitialOrderedRowStackCapactity];
+        
+        [self.orderedRowStack addObject:self.firstRow];
+        [self.orderedRowStack addObject:self.lastRow];
+        
         self.visibleRowStack = [NSMutableArray arrayWithCapacity:kInitialVisibleRowStackCapacity];
         self.broadcastQueue = [NSMutableArray arrayWithCapacity:kInitialBroadcastQueueCapacity];
         self.pendingIntegrationQueue = [NSMutableArray arrayWithCapacity:kInitialPendingIntegrationQueueCapacity];
@@ -125,24 +131,41 @@ typedef enum {
 
 // Recursive method that integrates the row into the visible
 -(void)integrateRow:(Row *)row betweenID:(GloballyUniqueID *)previousID andID:(GloballyUniqueID *)nextID
-{    
-    // (Cannot be larger than the number of rows in the ordered row stack)    
-    NSInteger indexOfPreviousRowInOrderedRowStack = [self.orderedRowStack indexOfObject:row.previousID];
-    NSInteger indexOfNextRowInOrderedRowStack = [self.orderedRowStack indexOfObject:row.nextID];
+{
+    NSLog(@"Integrate row called with row: %@ between ID: %@ and ID: %@", row, previousID, nextID);
     
-    NSRange rangeOfInterest = NSRangeFromString([NSString stringWithFormat:@"%lu, %lu", indexOfPreviousRowInOrderedRowStack, indexOfNextRowInOrderedRowStack]);
+    // (Cannot be larger than the number of rows in the ordered row stack)
+    
+    Row *previousRow = self.rowPool[previousID.stringValue];
+    Row *nextRow = self.rowPool[nextID.stringValue];
+    
+    NSLog(@"Previous row: %@", previousRow);
+    NSLog(@"Next row: %@", nextRow);
+    
+    NSInteger indexOfPreviousRowInOrderedRowStack = [self.orderedRowStack indexOfObject:previousRow];
+    NSInteger indexOfNextRowInOrderedRowStack = [self.orderedRowStack indexOfObject:nextRow];
+    
+    NSLog(@"Index of previous row in ordered row stack = %lu", indexOfPreviousRowInOrderedRowStack);
+    NSLog(@"Index of next row in ordered row stack = %lu", indexOfNextRowInOrderedRowStack);
+    
+    NSRange rangeOfInterest = NSRangeFromString([NSString stringWithFormat:@"%lu, %lu", indexOfPreviousRowInOrderedRowStack+1, indexOfNextRowInOrderedRowStack-1]);
     
     // Create the list of rows that initially interest us for use in ordering.
     // (In the WOOT research paper, this list is denoated by S'.)
     NSArray *rowsBetweenPreviousRowAndNextRow = [self.orderedRowStack subarrayWithRange:rangeOfInterest];
     
+    NSLog(@"S' = %@", rowsBetweenPreviousRowAndNextRow);
+    
     // TODO: Check if the S' array is empty. And if so, insert the character between previousID and nextID
     NSUInteger numberOfrowsBetweenPreviousRowAndNextRow = rowsBetweenPreviousRowAndNextRow.count;
     if (numberOfrowsBetweenPreviousRowAndNextRow == 0)
     {
+        NSLog(@"numberOfrowsBetweenPreviousRowAndNextRow = 0… about to insert row.");
+        
         // Insert row into the ordered row stack.
-        Row *rowToInsertRowAt = self.rowPool[nextID];
+        Row *rowToInsertRowAt = self.rowPool[nextID.stringValue];
         NSUInteger indexToInsertTheRow = [self.orderedRowStack indexOfObject:rowToInsertRowAt];
+        NSLog(@"Index to insert the row: %lu", indexToInsertTheRow);
         [self.orderedRowStack insertObject:row atIndex:indexToInsertTheRow];
         
         NSLog(@"Inserted row %@ at index: %lu", row, indexToInsertTheRow);
@@ -150,6 +173,8 @@ typedef enum {
         
         return;
     }
+    
+    NSLog(@"About to filter S'");
     
     // (In the WOOT research paper, this array is denoted by L.)
     // The +2 is to make room for the previousID and nextID which span
@@ -171,6 +196,8 @@ typedef enum {
         {
             [filteredArray addObject:currentRow];
         }
+        
+        NSLog(@"L = %@", filteredArray);
         
         // Check for ID ordering in the latest list
         // (None of the examples in the WOOT research paper end up with an L that has more
@@ -194,12 +221,11 @@ typedef enum {
         GloballyUniqueID *newPreviousID = ((Row *)filteredArray[i-1]).selfID;
         GloballyUniqueID *newNextID = ((Row *)filteredArray[i]).selfID;
         
+        NSLog(@"About to recurse…");
+        
         // Recurse to integrate the new array after initial ordering
         [self integrateRow:row betweenID:newPreviousID andID:newNextID];
     }
-    
-    
-    
 }
 
 // Adds row to the row pool
@@ -228,7 +254,7 @@ typedef enum {
 //
 -(BOOL)insertFragmentWithID:(GloballyUniqueID *)fragmentID
 {
-    return [self insertFragmentWithID:fragmentID atVisibleRowIndex:self.visibleRowStack.count];
+    return [self insertFragmentWithID:fragmentID atVisibleRowIndex:self.orderedRowStack.count - 1];
 }
 
 // TODO: Create a createFragment method that makes a fragment when passed a fragment type. 
@@ -289,13 +315,13 @@ typedef enum {
     
     // Create a new insert operation and add it to the operation pool.
     // TODO: Need to pass the previous ID and next ID 
-    Operation *insertOperation = [Operation insertOperationWithID:[self nextOperationID] rowID:rowID];
-    self.operationPool[insertOperation.selfID.stringValue] = insertOperation;
+//    Operation *insertOperation = [Operation insertOperationWithID:[self nextOperationID] rowID:rowID];
+//    self.operationPool[insertOperation.selfID.stringValue] = insertOperation;
     
     // Create and add a message to the broadcast queue.
     // TODO: Broadcast the message.
-    Message *message = [Message messageWithOperation:insertOperation row:row fragment:fragment];
-    [self.broadcastQueue addObject:message];
+//    Message *message = [Message messageWithOperation:insertOperation row:row fragment:fragment];
+//    [self.broadcastQueue addObject:message];
     
     return TRUE;
 }
