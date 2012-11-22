@@ -285,7 +285,7 @@ typedef enum {
     GloballyUniqueID *nextRowID = nil;
 
     // Set the previous ID, based on the previous row in the visible stack.
-    if (visibleRowIndex-1 >= 0)
+    if (visibleRowIndex-1 > 0)
     {
         Row *previousVisibleRow = self.visibleRowStack[visibleRowIndex-1];
         previousRowID = previousVisibleRow.selfID;
