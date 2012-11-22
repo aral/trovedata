@@ -30,4 +30,22 @@
     return self;
 }
 
+-(NSString *)description
+{
+    NSString *desc = nil;
+    if ([self.selfID.stringValue isEqualToString:@"0-0"])
+    {
+        desc = @"First row";
+    }
+    else if ([self.selfID.stringValue isEqualToString:@"0-1"])
+    {
+        desc = @"Last row";
+    }
+    else
+    {
+        desc = [NSString stringWithFormat:@"Row with id: %@ prevID: %@ nextID: %@ visibilityDegree: %lu content: %@", self.selfID, self.previousID, self.nextID, self.visibilityDegree, self.content];
+    }
+    return desc;
+}
+
 @end

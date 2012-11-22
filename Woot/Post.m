@@ -148,7 +148,7 @@ typedef enum {
     NSLog(@"Index of previous row in ordered row stack = %lu", indexOfPreviousRowInOrderedRowStack);
     NSLog(@"Index of next row in ordered row stack = %lu", indexOfNextRowInOrderedRowStack);
     
-    NSRange rangeOfInterest = NSRangeFromString([NSString stringWithFormat:@"%lu, %lu", indexOfPreviousRowInOrderedRowStack+1, indexOfNextRowInOrderedRowStack-1]);
+    NSRange rangeOfInterest = NSRangeFromString([NSString stringWithFormat:@"%lu, %lu", indexOfPreviousRowInOrderedRowStack, indexOfNextRowInOrderedRowStack-indexOfPreviousRowInOrderedRowStack-1]);
     
     // Create the list of rows that initially interest us for use in ordering.
     // (In the WOOT research paper, this list is denoated by S'.)
@@ -254,7 +254,7 @@ typedef enum {
 //
 -(BOOL)insertFragmentWithID:(GloballyUniqueID *)fragmentID
 {
-    return [self insertFragmentWithID:fragmentID atVisibleRowIndex:self.orderedRowStack.count - 1];
+    return [self insertFragmentWithID:fragmentID atVisibleRowIndex:self.visibleRowStack.count];
 }
 
 // TODO: Create a createFragment method that makes a fragment when passed a fragment type. 
@@ -278,14 +278,13 @@ typedef enum {
     
     // TODO: Based on the type of the fragment, may need to upload media, etc.
 
-    // TODO: Should we actually do the insert here or elsewhere?
     
     // Find the row IDs for the previous visible row and the next visible row to insert this row in between.
     GloballyUniqueID *previousRowID = nil;
     GloballyUniqueID *nextRowID = nil;
 
     // Set the previous ID, based on the previous row in the visible stack.
-    if (visibleRowIndex-1 > 0)
+    if (visibleRowIndex-1 >= 0)
     {
         Row *previousVisibleRow = self.visibleRowStack[visibleRowIndex-1];
         previousRowID = previousVisibleRow.selfID;
@@ -311,6 +310,11 @@ typedef enum {
     // Create the new row and add it to the row pool.
     GloballyUniqueID *rowID = [self nextRowID];
     Row *row = [Row rowWithContent:fragment rowID:rowID previousRowID:previousRowID nextRowID:nextRowID];
+    
+    // Insert the row in the visible row stack
+    self.visibleRowStack[visibleRowIndex] = row;
+    
+    // Insert the row into the row pool and make sure it gets integrated.
     [self insertRow:row];
     
     // Create a new insert operation and add it to the operation pool.

@@ -110,17 +110,22 @@
     self.post.fragmentPool[fragment2.fragmentID.stringValue] = fragment2;
     
     [self.post insertFragmentWithID:fragment1.fragmentID];
-//    [self.post insertFragmentWithID:fragment2.fragmentID];
-//
-//    NSLog(@"Row pool: %@", self.post.rowPool);
-//    NSLog(@"About to check for %@", self.post.firstRow.nextID.stringValue);
-//    
-//    Row *rowForFragment1 = (Row *)self.post.orderedRowStack[1];
-//    Fragment *shouldBeFragment1 = (Fragment *)rowForFragment1.content;
-//    
-//    NSLog(@"Row for fragment 1: %@", rowForFragment1);
-//    
-//    STAssertEqualObjects(shouldBeFragment1.fragmentID.stringValue, fragment1.fragmentID.stringValue, @"The first row's next row should contain the first fragment.");
+    [self.post insertFragmentWithID:fragment2.fragmentID];
+
+    NSLog(@"Row pool: %@", self.post.rowPool);
+    
+    Row *rowForFragment1FromOrderedRowStack = (Row *)self.post.orderedRowStack[1];
+    Fragment *shouldBeFragment1FromOrderedRowStack = (Fragment *)rowForFragment1FromOrderedRowStack.content;
+    
+    Row *rowForFragment1FromVisibleRowStack = (Row *)self.post.visibleRowStack[0];
+    Fragment *shouldBeFragment1FromVisibleRowStack = (Fragment *)rowForFragment1FromVisibleRowStack.content;
+    
+    NSLog(@"Row for fragment 1 from ordered row stack: %@", rowForFragment1FromOrderedRowStack);
+    NSLog(@"Row for fragment 1 from visible row stack: %@", rowForFragment1FromVisibleRowStack);
+    
+    
+    STAssertEqualObjects(shouldBeFragment1FromOrderedRowStack.fragmentID.stringValue, fragment1.fragmentID.stringValue, @"First row’s position in the ordered row stack should be correct.");
+    STAssertEqualObjects(shouldBeFragment1FromVisibleRowStack.fragmentID.stringValue, fragment1.fragmentID.stringValue, @"First row’s position in the visible row stack should be correct.");
     
 }
 
