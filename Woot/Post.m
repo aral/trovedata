@@ -67,8 +67,10 @@ typedef enum {
 -(GloballyUniqueID *)nextOperationID;
 -(GloballyUniqueID *)operationIDWithLocalClock:(NSUInteger)localClock;
 
--(BOOL)insertFragmentWithID:(GloballyUniqueID *)fragmentID;
+-(void)integrateRow:(Row *)row;
 
+-(BOOL)insertFragmentWithID:(GloballyUniqueID *)fragmentID;
+-(BOOL)insertRow:(Row *)row;
 @end
 
 @implementation Post
@@ -113,18 +115,47 @@ typedef enum {
     return self;
 }
 
+#pragma mark - Remote Operations
+-(void)integrateRow:(Row *)row
+{
+    // Integrate a remotely‐received row
+    NSLog(@"About to integrate remotely‐received row: %@", row);
+    [self integrateRow:row betweenID:row.previousID andID:row.nextID];
+}
+
 #pragma mark - Local Operations
+
+-(BOOL)isID:(GloballyUniqueID *)firstID lessThanID:(GloballyUniqueID *)secondID
+{
+    BOOL result;
+    if ([firstID.siteID isEqualTo:secondID.siteID])
+    {
+        BOOL isFirstRow = [firstID.stringValue isEqualToString: ((Row *)[Row first]).selfID.stringValue];
+        result = isFirstRow || (firstID.localClock < secondID.localClock);
+    }
+    else
+    {
+        NSComparisonResult comparisonResult = [firstID.siteID compare: secondID.siteID];
+        NSAssert(comparisonResult != NSOrderedSame, @"Globally unique IDs from different sites should never be the same.");
+        result = comparisonResult == NSOrderedAscending;
+    }
+    return result;
+}
+
 
 -(BOOL)isID:(GloballyUniqueID *)firstID greaterThanID:(GloballyUniqueID *)secondID
 {
     BOOL result;
     if ([firstID.siteID isEqualTo:secondID.siteID])
     {
-        result = firstID.localClock;
+        BOOL isLastRow = [firstID.stringValue isEqualToString: ((Row *)[Row last]).selfID.stringValue];
+        result = isLastRow || (firstID.localClock > secondID.localClock);
     }
     else
     {
-        result = firstID.siteID > secondID.siteID;
+        NSComparisonResult comparisonResult = [firstID.siteID compare: secondID.siteID];
+        NSAssert(comparisonResult != NSOrderedSame, @"Globally unique IDs from different sites should never be the same.");
+        result = comparisonResult == NSOrderedDescending;
     }
     return result;
 }
@@ -145,10 +176,12 @@ typedef enum {
     NSInteger indexOfPreviousRowInOrderedRowStack = [self.orderedRowStack indexOfObject:previousRow];
     NSInteger indexOfNextRowInOrderedRowStack = [self.orderedRowStack indexOfObject:nextRow];
     
+    NSLog(@"Current state of ordered row stack: %@", self.orderedRowStack);
+//    NSLog(@"Row pool: %@", self.rowPool);
     NSLog(@"Index of previous row in ordered row stack = %lu", indexOfPreviousRowInOrderedRowStack);
     NSLog(@"Index of next row in ordered row stack = %lu", indexOfNextRowInOrderedRowStack);
     
-    NSRange rangeOfInterest = NSRangeFromString([NSString stringWithFormat:@"%lu, %lu", indexOfPreviousRowInOrderedRowStack, indexOfNextRowInOrderedRowStack-indexOfPreviousRowInOrderedRowStack-1]);
+    NSRange rangeOfInterest = NSRangeFromString([NSString stringWithFormat:@"%lu, %lu", indexOfPreviousRowInOrderedRowStack+1, indexOfNextRowInOrderedRowStack-indexOfPreviousRowInOrderedRowStack-1]);
     
     // Create the list of rows that initially interest us for use in ordering.
     // (In the WOOT research paper, this list is denoated by S'.)
@@ -177,55 +210,89 @@ typedef enum {
     NSLog(@"About to filter S'");
     
     // (In the WOOT research paper, this array is denoted by L.)
-    // The +2 is to make room for the previousID and nextID which span
+    //
+    // The +2 is to make room for the previous and next rows which bookend
     // the filtered list as per the algorithm in the WOOT research paper.
+    //
+    // L = Cpd0d1d2...dmCn where d0...dm are the rows in S' such that
+    //     Cp(di) <=(s) Cp and Cn <=(s) Cn(di)
+    //
     NSMutableArray *filteredArray = [NSMutableArray arrayWithCapacity:rowsBetweenPreviousRowAndNextRow.count + 2];
+    [filteredArray addObject:previousRow];
     
     for (Row *currentRow in rowsBetweenPreviousRowAndNextRow)
     {
-        NSUInteger indexOfCurrentPreviousRowInOrderedRowStack = [self.orderedRowStack indexOfObject:currentRow.previousID];
-        NSUInteger indexOfCurrentNextRowInOrderedRowStack = [self.orderedRowStack indexOfObject:currentRow.nextID];
+        NSLog(@"About to filter row: %@", currentRow);
+        
+        // We get the current previous and next rows from the row pool and don’t use the currentRow.previousID and
+        // currentRow.nextID objects directly as they may not be the same ID object if received from a remote source.
+        NSLog(@"Current Previous Row ID: %@", currentRow.previousID.stringValue);
+        NSLog(@"Current Next Row ID: %@", currentRow.nextID.stringValue);
+        
+        Row *currentPreviousRow = self.rowPool[currentRow.previousID.stringValue];
+        Row *currentNextRow = self.rowPool[currentRow.nextID.stringValue];
+        
+        NSUInteger indexOfCurrentPreviousRowInOrderedRowStack = [self.orderedRowStack indexOfObject:currentPreviousRow];
+        NSUInteger indexOfCurrentNextRowInOrderedRowStack = [self.orderedRowStack indexOfObject:currentNextRow];
+        
+        NSLog(@"Index of current previus row in ordered row stack: %lu", indexOfCurrentPreviousRowInOrderedRowStack);
+        NSLog(@"Index of current next row in ordered row stack: %lu", indexOfCurrentNextRowInOrderedRowStack);
         
         // Only include the current row if its previous row ID is less than or equal to the row-being-integrated’s
         // previous row ID and if its next row ID is greater than or equal to the row‐being‐integrated’s next row ID. 
         BOOL previousOrderingCheck = indexOfCurrentPreviousRowInOrderedRowStack <= indexOfPreviousRowInOrderedRowStack;
         BOOL nextOrderingCheck = indexOfCurrentNextRowInOrderedRowStack >= indexOfNextRowInOrderedRowStack;
         
+        NSLog(@"Previous ordering check: %lu <= %lu = %@", indexOfCurrentPreviousRowInOrderedRowStack, indexOfPreviousRowInOrderedRowStack, previousOrderingCheck ? @"YES" : @"NO");
+        NSLog(@"Next ordering check: %lu <= %lu = %@", indexOfCurrentNextRowInOrderedRowStack, indexOfNextRowInOrderedRowStack, nextOrderingCheck ? @"YES" : @"NO");
+        
         // This row statisfies the ordering rules. Add it to the resulting array.
         if (previousOrderingCheck && nextOrderingCheck)
         {
             [filteredArray addObject:currentRow];
         }
-        
-        NSLog(@"L = %@", filteredArray);
-        
-        // Check for ID ordering in the latest list
-        // (None of the examples in the WOOT research paper end up with an L that has more
-        // than one element but I can see how this can happen so I’m implementing this as per the
-        // algorithm in the original paper.)
-        // TODO: Create test case for when there is more than one row.
-        NSUInteger i = 0;
-        NSUInteger indexOfLastRowInArrayAfterInitialOrdering = filteredArray.count-1;
-        GloballyUniqueID *idToCheck;
-        while (i < indexOfLastRowInArrayAfterInitialOrdering)
-        {
-            idToCheck = ((Row *)filteredArray[i]).selfID;
-            
-            if (![self isID:row.selfID greaterThanID:idToCheck]) {
-                break;
-            }
-            
-            i++;
-        }
-        
-        GloballyUniqueID *newPreviousID = ((Row *)filteredArray[i-1]).selfID;
-        GloballyUniqueID *newNextID = ((Row *)filteredArray[i]).selfID;
-        
-        NSLog(@"About to recurse…");
-        
-        // Recurse to integrate the new array after initial ordering
-        [self integrateRow:row betweenID:newPreviousID andID:newNextID];
     }
+    
+    [filteredArray addObject:nextRow];
+    
+    NSLog(@"L = %@", filteredArray);
+    
+    // Check for ID ordering in the latest list
+    // (None of the examples in the WOOT research paper end up with an L that has more
+    // than one element but I can see how this can happen so I’m implementing this as per the
+    // algorithm in the original paper.)
+    // TODO: Create test case for when there is more than one row.
+    NSInteger i = 1;
+    NSInteger indexOfLastRowInFilteredArray = filteredArray.count - 1;
+    NSLog(@"Index of last row in array: %li", indexOfLastRowInFilteredArray);
+    NSLog(@"%li < %li ? %@", i, indexOfLastRowInFilteredArray, i < indexOfLastRowInFilteredArray ? @"YES": @"NO");
+    NSLog(@"Getting the index to recurse on…");
+    NSLog(@"About to check that %@ is less than %@", ((Row *)filteredArray[i]).selfID, row.selfID);
+    while ( (i < indexOfLastRowInFilteredArray) && [self isID:((Row *)filteredArray[i]).selfID lessThanID:row.selfID] )
+    {
+        NSLog(@"It is less, incremening i…");
+        i++;
+        NSLog(@"i = %lu",i);
+        NSLog(@"About to check that %@ is less than %@", ((Row *)filteredArray[i]).selfID, row.selfID);
+    }
+    NSLog(@"It is not less! Stopped.");
+    
+    GloballyUniqueID *newPreviousID = ((Row *)filteredArray[i-1]).selfID;
+    GloballyUniqueID *newNextID = ((Row *)filteredArray[i]).selfID;
+    
+    NSLog(@"New Previous ID = %@", newPreviousID);
+    NSLog(@"New Next ID = %@", newNextID);
+    NSLog(@"About to recurse…");
+    
+    // DEBUG
+    if (filteredArray.count == 2) {
+        if ([((Row *)filteredArray[0]).selfID isEqual:self.firstRow.selfID] && [((Row *)filteredArray[1]).selfID isEqual: self.lastRow.selfID]) {
+            NSAssert(FALSE, @"ENDLESS LOOP!!!!");
+        }
+    }
+    
+    // Recurse to integrate the new array after initial ordering
+    [self integrateRow:row betweenID:newPreviousID andID:newNextID];
 }
 
 // Adds row to the row pool

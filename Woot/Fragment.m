@@ -27,4 +27,10 @@
     return self;
 }
 
+-(NSString *)description
+{
+    NSArray *fragmentTypeNames = @[@"None", @"Heading", @"Text", @"Image", @"Tweet"];
+    return [NSString stringWithFormat:@"Fragment with ID: %@ of type: %@ with data: %@", self.fragmentID, fragmentTypeNames[self.type], self.data];
+}
+
 @end
