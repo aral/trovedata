@@ -141,6 +141,13 @@
     // Gérald Oster — Pascal Urso — Pascal Molli — Abdessamad Imine
     // Mai 2005
     //
+    // Hasse diagram:
+    //
+    //     ____ 2 ____
+    //    /           \
+    // Cb ----- 1 ----- Ce
+    //    \_3_/   \_4_/
+    //
     
     // Site 2 — new row generated: ins(Cb < 2 < Ce)
     Row *row2 = [self insertMockRowWithSiteIDString:@"2" localClock:0 dataString:@"2" betweenPreviousRowID:self.firstRowID andNextRowID:self.lastRowID];
