@@ -61,7 +61,18 @@
 @end
 
 @interface PostTests ()
+
 @property (nonatomic, strong) Post *post;
+
+// Test Helpers
+
+@property (nonatomic, strong) GloballyUniqueID *firstRowID;
+@property (nonatomic, strong) GloballyUniqueID *lastRowID;
+
+-(Row *)insertMockLocalRowAtVisibleSiteIndex:(NSUInteger)visibleSiteIndex withSiteIDString:(NSString *)siteIDString localClock:(NSUInteger)localClock dataString:(NSString *)dataString betweenPreviousRowID:(GloballyUniqueID *)previousRowID andNextRowID:(GloballyUniqueID *)nextRowID;
+
+-(Row *)insertMockRemoteRowWithSiteIDString:(NSString *)siteIDString localClock:(NSUInteger)localClock dataString:(NSString *)dataString betweenPreviousRowID:(GloballyUniqueID *)previousRowID andNextRowID:(GloballyUniqueID *)nextRowID;
+
 @end
 
 @implementation PostTests
@@ -69,12 +80,40 @@
 -(void) setUp
 {
     self.post = [Post new];
+    self.firstRowID = self.post.firstRow.selfID;
+    self.lastRowID = self.post.lastRow.selfID;
 }
 
 -(void) tearDown
 {
     self.post = nil;
 }
+
+#pragma mark - Test helpers.
+
+// Inserts and integrates a mock local row (i.e., simulates one created via the UI on this local client).
+-(Row *)insertMockLocalRowAtVisibleSiteIndex:(NSUInteger)visibleSiteIndex withSiteIDString:(NSString *)siteIDString localClock:(NSUInteger)localClock dataString:(NSString *)dataString betweenPreviousRowID:(GloballyUniqueID *)previousRowID andNextRowID:(GloballyUniqueID *)nextRowID
+{
+    Row *row = [self insertMockRemoteRowWithSiteIDString:siteIDString localClock:localClock dataString:dataString betweenPreviousRowID:previousRowID andNextRowID:nextRowID];
+    
+    self.post.visibleRowStack[visibleSiteIndex] = row;
+
+    return row;
+}
+
+// Inserts and integrates a mock remote row.
+-(Row *)insertMockRemoteRowWithSiteIDString:(NSString *)siteIDString localClock:(NSUInteger)localClock dataString:(NSString *)dataString betweenPreviousRowID:(GloballyUniqueID *)previousRowID andNextRowID:(GloballyUniqueID *)nextRowID
+{
+    Fragment *fragment = [Fragment fragmentWithType:FragmentTypeText id:[GloballyUniqueID idWithSiteIDString:siteIDString localClock:localClock] data:@{@"text":dataString}];
+    self.post.fragmentPool[fragment.fragmentID.stringValue] = fragment;
+    GloballyUniqueID *rowID = [GloballyUniqueID idWithSiteIDString:siteIDString localClock:localClock];
+    Row *row = [Row rowWithContent:fragment rowID:rowID previousRowID:previousRowID nextRowID:nextRowID];
+    [self.post insertRow:row];  // Adds to row pool and integrates.
+    
+    return row;
+}
+
+#pragma mark - Tests
 
 -(void)testInitialPostStructure
 {
@@ -94,48 +133,28 @@
     STAssertTrue(id1.localClock < id2.localClock, @"Local clock of successive fragment IDs should be in ascending order.");
 }
 
+
 -(void)testFirstExampleFromWOOTResearchPaperAsSite2
 {
-    // Simulate generation of op2 at Site 2.
-    Fragment *fragment2 = [Fragment fragmentWithType:FragmentTypeText id:[GloballyUniqueID idWithSiteIDString:@"2" localClock:0] data:@{@"text":@"2"}];
-    self.post.fragmentPool[fragment2.fragmentID.stringValue] = fragment2;
-    // Although the following would test the app better, I want to test that the results are identical to the
-    // ones presented in the research paper so I am manually creating this Row so I can control its ID and
-    // thus the ID ordering of the various rows.
-    // [self.post insertFragmentWithID:fragment2.fragmentID];
-    GloballyUniqueID *row2AtSite2ID = [GloballyUniqueID idWithSiteIDString:@"2" localClock:0];
-    Row *row2AtSite2 = [Row rowWithContent:fragment2 rowID:row2AtSite2ID previousRowID:self.post.firstRow.selfID nextRowID:self.post.lastRow.selfID];
-    self.post.visibleRowStack[0] = row2AtSite2;  // Adding since we generated this locally. It should not affect the test.
-    [self.post insertRow:row2AtSite2];  // Adds to row pool and integrates.
+    //
+    // Section 3.5, Pg. 11: Example 1 (as Site 2) from
+    // Real time group editors without Operational transformation
+    // Gérald Oster — Pascal Urso — Pascal Molli — Abdessamad Imine
+    // Mai 2005
+    //
     
-    // Simulate receipt of op1 from site 1.
-    Fragment *fragment1FromSite1 = [Fragment fragmentWithType:FragmentTypeText id:[GloballyUniqueID idWithSiteIDString:@"1" localClock:0] data:@{@"text":@"1"}];
-    self.post.fragmentPool[fragment1FromSite1.fragmentID.stringValue] = fragment1FromSite1;
-    // Since firstRow and lastRow IDs are constant for all clients,
-    // we are just being lazy and using the ones already on the post.
-    GloballyUniqueID *row1FromSite1ID = [GloballyUniqueID idWithSiteIDString:@"1" localClock:0];
-    Row *row1FromSite1 = [Row rowWithContent:fragment1FromSite1 rowID:row1FromSite1ID previousRowID:self.post.firstRow.selfID nextRowID:self.post.lastRow.selfID];
-    self.post.rowPool[row1FromSite1ID.stringValue] = row1FromSite1;
-    [self.post integrateRow:row1FromSite1];
+    // Site 2 — new row generated: ins(Cb < 2 < Ce)
+    Row *row2AtSite2 = [self insertMockLocalRowAtVisibleSiteIndex:0 withSiteIDString:@"2" localClock:0 dataString:@"2" betweenPreviousRowID:self.firstRowID andNextRowID:self.lastRowID];
     
-    // Simulate receipt of op3 from site 3.
-    Fragment *fragment3FromSite3 = [Fragment fragmentWithType:FragmentTypeText id:[GloballyUniqueID idWithSiteIDString:@"3" localClock:0] data:@{@"text": @"3"}];
-    self.post.fragmentPool[fragment3FromSite3.fragmentID.stringValue] = fragment3FromSite3;
-    GloballyUniqueID *row3FromSite3ID = [GloballyUniqueID idWithSiteIDString:@"3" localClock:0];
-    Row *row3FromSite3 = [Row rowWithContent:fragment3FromSite3 rowID:row3FromSite3ID previousRowID:self.post.firstRow.selfID nextRowID:row1FromSite1ID];
-    self.post.rowPool[row3FromSite3ID.stringValue] = row3FromSite3;
-    [self.post integrateRow:row3FromSite3];
+    // Remote row received from Site 1: ins(Cb < 1 < Ce)
+    Row *row1FromSite1 = [self insertMockRemoteRowWithSiteIDString:@"1" localClock:0 dataString:@"1" betweenPreviousRowID:self.firstRowID andNextRowID:self.lastRowID];
     
-    // Simulate receipt of op4 from site 3.
-    Fragment *fragment4FromSite3 = [Fragment fragmentWithType:FragmentTypeText id:[GloballyUniqueID idWithSiteIDString:@"3" localClock:1] data:@{@"text":@"4"}];
-    self.post.fragmentPool[fragment4FromSite3.fragmentID.stringValue] = fragment4FromSite3;
-    GloballyUniqueID *row4FromSite3ID = [GloballyUniqueID idWithSiteIDString:@"3" localClock:1];
-    Row *row4FromSite3 = [Row rowWithContent:fragment4FromSite3 rowID:row4FromSite3ID previousRowID:row1FromSite1ID nextRowID:self.post.lastRow.selfID];
-    self.post.rowPool[row4FromSite3ID.stringValue] = row4FromSite3;
-    [self.post integrateRow:row4FromSite3];
-    
-//    NSLog(@"Ordered row stack on Site 2 after integrations: %@", self.post.orderedRowStack);
-    
+    // Remote row received from Site 3: ins(Cb < 3 < 1)
+    Row *row3FromSite3 = [self insertMockRemoteRowWithSiteIDString:@"3" localClock:0 dataString:@"3" betweenPreviousRowID:self.firstRowID andNextRowID:row1FromSite1.selfID];
+        
+    // Remote row received from Site 3: ins(1 < 4 < Ce)
+    Row *row4FromSite3 = [self insertMockRemoteRowWithSiteIDString:@"3" localClock:1 dataString:@"4" betweenPreviousRowID:row1FromSite1.selfID andNextRowID:self.lastRowID];
+        
     STAssertEquals(self.post.orderedRowStack.count, (NSUInteger)6, @"There should be six rows in the ordered row stack");
     STAssertEqualObjects(((Row *)self.post.orderedRowStack[0]).selfID.stringValue, self.post.firstRow.selfID.stringValue, @"Row 0 should be: the constant first row.");
     STAssertEqualObjects(((Row *)self.post.orderedRowStack[1]).selfID.stringValue, row3FromSite3.selfID.stringValue, @"Row 1 should be: Row 3 from site 3 — '3'");
