@@ -67,10 +67,17 @@ typedef enum {
 -(GloballyUniqueID *)nextOperationID;
 -(GloballyUniqueID *)operationIDWithLocalClock:(NSUInteger)localClock;
 
--(void)integrateInsertRow:(Row *)row;
-
+// Insertion
 -(BOOL)insertFragmentWithID:(GloballyUniqueID *)fragmentID;
 -(BOOL)insertRow:(Row *)row;
+
+// Insert integration
+-(void)integrateInsertRow:(Row *)row;
+
+// Delete integration
+-(void)integrateDeleteRow:(Row *)row;
+-(void)integrateDeleteRowWIthID:(GloballyUniqueID *)rowID;
+
 @end
 
 @implementation Post
@@ -115,12 +122,52 @@ typedef enum {
     return self;
 }
 
-#pragma mark - Remote Operations
+#pragma mark - Insert Row
+
 -(void)integrateInsertRow:(Row *)row
 {
     // Integrate a remotely‐received row
-    NSLog(@"About to integrate remotely‐received row: %@", row);
+    NSLog(@"About to integrate insert row: %@", row);
+
+    // Check if the preconditions for integrating the insertion of the row are statisfied.
+    // i.e., check if the previous and next rows exist on this client yet:
+
+    if (self.rowPool[row.previousID.stringValue] == nil || self.rowPool[row.nextID.stringValue] == nil)
+    {
+        NSLog(@"Cannot integrate insert row because the preconditions have not been met (either prev or next row doesn’t exist yet. Row: %@", row);
+        return;
+    }
+    
+    // Preconditions are OK, integrate insert the row.
     [self integrateInsertRow:row betweenID:row.previousID andID:row.nextID];
+}
+
+#pragma mark - Delete Row
+
+-(void)integrateDeleteRow:(Row *)row
+{
+    NSLog(@"About to integrate delete row: %@", row);
+    
+    row.visibilityDegree--;
+    
+    NSLog(@"New visibility degree: %li for row %@", row.visibilityDegree, row);
+    
+    return;
+}
+
+-(void)integrateDeleteRowWIthID:(GloballyUniqueID *)rowID
+{
+    NSLog(@"About to integrate delete row with ID: %@", rowID);
+    
+    // Check preconditions (the row must exist)
+    Row *rowToDelete = self.rowPool[rowID.stringValue];
+    if (rowToDelete == nil)
+    {
+        NSLog(@"Precondition failure: Cannot integrate deletion of row with ID %@", rowID);
+        return;
+    }
+    
+    [self integrateDeleteRow:rowToDelete];
 }
 
 #pragma mark - Local Operations
@@ -223,12 +270,11 @@ typedef enum {
     for (Row *currentRow in rowsBetweenPreviousRowAndNextRow)
     {
 //        NSLog(@"About to filter row: %@", currentRow);
-        
-        // We get the current previous and next rows from the row pool and don’t use the currentRow.previousID and
-        // currentRow.nextID objects directly as they may not be the same ID object if received from a remote source.
 //        NSLog(@"Current Previous Row ID: %@", currentRow.previousID.stringValue);
 //        NSLog(@"Current Next Row ID: %@", currentRow.nextID.stringValue);
         
+        // We get the current previous and next rows from the row pool and don’t use the currentRow.previousID and
+        // currentRow.nextID objects directly as they may not be the same ID object if received from a remote source.
         Row *currentPreviousRow = self.rowPool[currentRow.previousID.stringValue];
         Row *currentNextRow = self.rowPool[currentRow.nextID.stringValue];
         

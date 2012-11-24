@@ -20,7 +20,7 @@
 {
     self = [super init];
     if (self) {
-        self.fragmentID = fragmentID;
+        self.selfID = fragmentID;
         self.type = fragmentType;
         self.data = data;
     }
@@ -30,7 +30,7 @@
 -(NSString *)description
 {
     NSArray *fragmentTypeNames = @[@"None", @"Heading", @"Text", @"Image", @"Tweet"];
-    return [NSString stringWithFormat:@"Fragment with ID: %@ of type: %@ with data: %@", self.fragmentID, fragmentTypeNames[self.type], self.data];
+    return [NSString stringWithFormat:@"Fragment with ID: %@ of type: %@ with data: %@", self.selfID, fragmentTypeNames[self.type], self.data];
 }
 
 @end

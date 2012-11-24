@@ -19,7 +19,7 @@ typedef enum {
 
 @interface Fragment : NSObject
 
-@property (nonatomic, strong) GloballyUniqueID *fragmentID;
+@property (nonatomic, strong) GloballyUniqueID *selfID;
 @property (nonatomic, assign) FragmentType type;
 @property (nonatomic, strong) NSDictionary *data;
 

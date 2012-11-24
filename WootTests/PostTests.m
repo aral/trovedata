@@ -95,7 +95,7 @@
 -(Row *)insertMockRowWithSiteIDString:(NSString *)siteIDString localClock:(NSUInteger)localClock dataString:(NSString *)dataString betweenPreviousRowID:(GloballyUniqueID *)previousRowID andNextRowID:(GloballyUniqueID *)nextRowID
 {
     Fragment *fragment = [Fragment fragmentWithType:FragmentTypeText id:[GloballyUniqueID idWithSiteIDString:siteIDString localClock:localClock] data:@{@"text":dataString}];
-    self.post.fragmentPool[fragment.fragmentID.stringValue] = fragment;
+    self.post.fragmentPool[fragment.selfID.stringValue] = fragment;
     GloballyUniqueID *rowID = [GloballyUniqueID idWithSiteIDString:siteIDString localClock:localClock];
     Row *row = [Row rowWithContent:fragment rowID:rowID previousRowID:previousRowID nextRowID:nextRowID];
     [self.post insertRow:row];  // Adds to row pool and integrates.
@@ -139,11 +139,11 @@
                                                   id:[self.post nextFragmentID]
                                                 data:@{@"text":@"Some sample text."}];
     
-    self.post.fragmentPool[fragment1.fragmentID.stringValue] = fragment1;
-    self.post.fragmentPool[fragment2.fragmentID.stringValue] = fragment2;
+    self.post.fragmentPool[fragment1.selfID.stringValue] = fragment1;
+    self.post.fragmentPool[fragment2.selfID.stringValue] = fragment2;
     
-    [self.post insertFragmentWithID:fragment1.fragmentID];
-    [self.post insertFragmentWithID:fragment2.fragmentID];
+    [self.post insertFragmentWithID:fragment1.selfID];
+    [self.post insertFragmentWithID:fragment2.selfID];
     
 //    NSLog(@"Row pool: %@", self.post.rowPool);
     
@@ -156,8 +156,8 @@
 //    NSLog(@"Row for fragment 1 from ordered row stack: %@", rowForFragment1FromOrderedRowStack);
 //    NSLog(@"Row for fragment 1 from visible row stack: %@", rowForFragment1FromVisibleRowStack);
         
-    STAssertEqualObjects(shouldBeFragment1FromOrderedRowStack.fragmentID.stringValue, fragment1.fragmentID.stringValue, @"First row’s position in the ordered row stack should be correct.");
-    STAssertEqualObjects(shouldBeFragment1FromVisibleRowStack.fragmentID.stringValue, fragment1.fragmentID.stringValue, @"First row’s position in the visible row stack should be correct.");
+    STAssertEqualObjects(shouldBeFragment1FromOrderedRowStack.selfID.stringValue, fragment1.selfID.stringValue, @"First row’s position in the ordered row stack should be correct.");
+    STAssertEqualObjects(shouldBeFragment1FromVisibleRowStack.selfID.stringValue, fragment1.selfID.stringValue, @"First row’s position in the visible row stack should be correct.");
     
 }
 
