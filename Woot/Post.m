@@ -67,7 +67,7 @@ typedef enum {
 -(GloballyUniqueID *)nextOperationID;
 -(GloballyUniqueID *)operationIDWithLocalClock:(NSUInteger)localClock;
 
--(void)integrateRow:(Row *)row;
+-(void)integrateInsertRow:(Row *)row;
 
 -(BOOL)insertFragmentWithID:(GloballyUniqueID *)fragmentID;
 -(BOOL)insertRow:(Row *)row;
@@ -116,11 +116,11 @@ typedef enum {
 }
 
 #pragma mark - Remote Operations
--(void)integrateRow:(Row *)row
+-(void)integrateInsertRow:(Row *)row
 {
     // Integrate a remotely‐received row
     NSLog(@"About to integrate remotely‐received row: %@", row);
-    [self integrateRow:row betweenID:row.previousID andID:row.nextID];
+    [self integrateInsertRow:row betweenID:row.previousID andID:row.nextID];
 }
 
 #pragma mark - Local Operations
@@ -161,7 +161,7 @@ typedef enum {
 }
 
 // Recursive method that integrates the row into the visible
--(void)integrateRow:(Row *)row betweenID:(GloballyUniqueID *)previousID andID:(GloballyUniqueID *)nextID
+-(void)integrateInsertRow:(Row *)row betweenID:(GloballyUniqueID *)previousID andID:(GloballyUniqueID *)nextID
 {
     NSLog(@"Integrate row called with row: %@ between ID: %@ and ID: %@", row, previousID, nextID);
     
@@ -292,7 +292,7 @@ typedef enum {
     }
     
     // Recurse to integrate the new array after initial ordering
-    [self integrateRow:row betweenID:newPreviousID andID:newNextID];
+    [self integrateInsertRow:row betweenID:newPreviousID andID:newNextID];
 }
 
 // Adds row to the row pool
@@ -311,13 +311,13 @@ typedef enum {
 //    NSLog(@"Inserted row with ID %@ into the row pool.", row.selfID.stringValue);
     
     // Integrate the row into the ordered row list
-    [self integrateRow:row betweenID:row.previousID andID:row.nextID];
+    [self integrateInsertRow:row betweenID:row.previousID andID:row.nextID];
     
     return TRUE;
 }
 
 //
-// Helper method, pushes row.
+// Helper method, creates a new row with the given fragment and pushes it on the ordered row stack.
 //
 -(BOOL)insertFragmentWithID:(GloballyUniqueID *)fragmentID
 {
@@ -396,27 +396,6 @@ typedef enum {
     
     return TRUE;
 }
-
-//
-//  Integrate method.
-//  =================
-//
-//  Since the create method will only be called locally (may need to change the name to reflect this better),
-//  there is no chance that the previous and next rows will not exist. Keeping this code commented out to
-//  remind me to do this check when I implement the remote row insertion method.
-//
-//  TODO: Check if the previous and next rows exist. If they don’t yet, create a pending integration and
-//  push it into the pendingIntegrationQueue.
-//
-//    Row *previousRow = self.rowPool[previousRowID.stringValue];
-//    Row *nextRow = self.rowPool[nextRowID.stringValue];
-//
-//    if (previousRow && nextRow)
-//    {
-//        // OK, both previous and next row exist, we can integrate this.
-//        // TODO
-//    }
-//
 
 
 // TODO: Refactor — there is duplication between op IDs and row IDs.

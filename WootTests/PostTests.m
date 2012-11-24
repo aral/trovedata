@@ -56,7 +56,7 @@
 -(GloballyUniqueID *)operationIDWithLocalClock:(NSUInteger)localClock;
 
 -(BOOL)insertFragmentWithID:(GloballyUniqueID *)fragmentID;
--(void)integrateRow:(Row *)row;
+-(void)integrateInsertRow:(Row *)row;
 -(BOOL)insertRow:(Row *)row;
 @end
 
