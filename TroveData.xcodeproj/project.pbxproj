@@ -453,6 +453,7 @@
 				GCC_PREFIX_HEADER = "Woot/TroveData-Prefix.pch";
 				INFOPLIST_FILE = "Woot/TroveData-Info.plist";
 				PRODUCT_NAME = TroveData;
+				TEST_AFTER_BUILD = NO;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -465,6 +466,7 @@
 				GCC_PREFIX_HEADER = "Woot/TroveData-Prefix.pch";
 				INFOPLIST_FILE = "Woot/TroveData-Info.plist";
 				PRODUCT_NAME = TroveData;
+				TEST_AFTER_BUILD = NO;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -479,6 +481,7 @@
 				GCC_PREFIX_HEADER = "Woot/TroveData-Prefix.pch";
 				INFOPLIST_FILE = "WootTests/TroveDataTests-Info.plist";
 				PRODUCT_NAME = TroveDataTests;
+				TEST_AFTER_BUILD = YES;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -494,6 +497,7 @@
 				GCC_PREFIX_HEADER = "Woot/TroveData-Prefix.pch";
 				INFOPLIST_FILE = "WootTests/TroveDataTests-Info.plist";
 				PRODUCT_NAME = TroveDataTests;
+				TEST_AFTER_BUILD = YES;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};

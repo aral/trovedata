@@ -145,7 +145,7 @@
     [self.post insertFragmentWithID:fragment1.fragmentID];
     [self.post insertFragmentWithID:fragment2.fragmentID];
     
-    NSLog(@"Row pool: %@", self.post.rowPool);
+//    NSLog(@"Row pool: %@", self.post.rowPool);
     
     Row *rowForFragment1FromOrderedRowStack = (Row *)self.post.orderedRowStack[1];
     Fragment *shouldBeFragment1FromOrderedRowStack = (Fragment *)rowForFragment1FromOrderedRowStack.content;
@@ -153,10 +153,9 @@
     Row *rowForFragment1FromVisibleRowStack = (Row *)self.post.visibleRowStack[0];
     Fragment *shouldBeFragment1FromVisibleRowStack = (Fragment *)rowForFragment1FromVisibleRowStack.content;
     
-    NSLog(@"Row for fragment 1 from ordered row stack: %@", rowForFragment1FromOrderedRowStack);
-    NSLog(@"Row for fragment 1 from visible row stack: %@", rowForFragment1FromVisibleRowStack);
-    
-    
+//    NSLog(@"Row for fragment 1 from ordered row stack: %@", rowForFragment1FromOrderedRowStack);
+//    NSLog(@"Row for fragment 1 from visible row stack: %@", rowForFragment1FromVisibleRowStack);
+        
     STAssertEqualObjects(shouldBeFragment1FromOrderedRowStack.fragmentID.stringValue, fragment1.fragmentID.stringValue, @"First row’s position in the ordered row stack should be correct.");
     STAssertEqualObjects(shouldBeFragment1FromVisibleRowStack.fragmentID.stringValue, fragment1.fragmentID.stringValue, @"First row’s position in the visible row stack should be correct.");
     
@@ -177,21 +176,26 @@
 
 #pragma mark - Example 1 Tests
 
+//
+// Section 3.5, Pg. 11: Example 1 from
+// Real time group editors without Operational transformation
+// Gérald Oster — Pascal Urso — Pascal Molli — Abdessamad Imine
+// Mai 2005
+//
+// Hasse diagram:
+//
+//    __ 2 __
+//   /       \
+//  /         \
+// Cb -- 1 -- Ce
+//  \   / \   /
+//   \ /   \ /
+//    3     4
+//
+
 -(void)testFirstExampleAsSite2
 {
-    //
-    // Section 3.5, Pg. 11: Example 1 (as Site 2) from
-    // Real time group editors without Operational transformation
-    // Gérald Oster — Pascal Urso — Pascal Molli — Abdessamad Imine
-    // Mai 2005
-    //
-    // Hasse diagram:
-    //
-    //     ____ 2 ____
-    //    /           \
-    // Cb ----- 1 ----- Ce
-    //    \_3_/   \_4_/
-    //
+    // Example 1 as Site 2.
     
     // Site 2 — new row generated: ins(Cb < 2 < Ce)
     Row *row2 = [self insertMockRowWithSiteIDString:@"2" localClock:0 dataString:@"2" betweenPreviousRowID:self.firstRowID andNextRowID:self.lastRowID];
@@ -212,7 +216,7 @@
 -(void)testFirstExampleAsSite3
 {
     //
-    // Section 3.5, Pg. 11: Example 1 (as Site 3)
+    // Example 1 as Site 3.
     //
     
     // Remote row received from Site 1: ins(Cb < 1 < Ce)
@@ -233,8 +237,9 @@
 -(void)testFirstExampleAsSite1
 {
     //
-    // Section 3.5, Pg. 11: Example 1 (as Site 3)
-    // Extension of example: assuming order o1, o2, o3, o4
+    // Example 1 as Site 1.
+    //
+    // Extension of example in research paper: assuming order o1, o2, o3, o4.
     //
     
     // Site 1 — new row generated: ins(Cb < 1 < Ce)
@@ -287,6 +292,29 @@
 
 #pragma mark - Example 2 Tests
 
+//
+// Section 3.5, Pg. 13: Example 2 from
+// Real time group editors without Operational transformation
+// Gérald Oster — Pascal Urso — Pascal Molli — Abdessamad Imine
+// Mai 2005
+//
+// Hasse diagram:
+//
+//       6
+//      / \
+//     /   \
+//    1     3
+//   / \   / \
+//  /   \ /   \
+// Cb -- 0 -- Ce
+//  \   / \   /
+//   \ /   \ /
+//    2     4
+//     \   /
+//      \ /
+//       5
+//
+
 -(void)testReceptionOfRow6Then5
 {
     NSMutableArray *rows = [[self commonlyReceivedRowsForExample2] mutableCopy];
@@ -298,7 +326,7 @@
     [rows addObject:row5];
     [rows addObject:row6];
     
-    [self runExample2AssertsUsingRowArray:rows];
+    [self runExample2AssertsUsingRowArray:[rows copy]];
 }
 
 -(void)testReceptionOfRow5Then6
@@ -312,7 +340,7 @@
     [rows addObject:row5];
     [rows addObject:row6];
     
-    [self runExample2AssertsUsingRowArray:rows];
+    [self runExample2AssertsUsingRowArray:[rows copy]];
 }
 
 @end

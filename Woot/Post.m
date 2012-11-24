@@ -170,16 +170,16 @@ typedef enum {
     Row *previousRow = self.rowPool[previousID.stringValue];
     Row *nextRow = self.rowPool[nextID.stringValue];
     
-    NSLog(@"Previous row: %@", previousRow);
-    NSLog(@"Next row: %@", nextRow);
+//    NSLog(@"Previous row: %@", previousRow);
+//    NSLog(@"Next row: %@", nextRow);
     
     NSInteger indexOfPreviousRowInOrderedRowStack = [self.orderedRowStack indexOfObject:previousRow];
     NSInteger indexOfNextRowInOrderedRowStack = [self.orderedRowStack indexOfObject:nextRow];
     
-    NSLog(@"Current state of ordered row stack: %@", self.orderedRowStack);
+//    NSLog(@"Current state of ordered row stack: %@", self.orderedRowStack);
 //    NSLog(@"Row pool: %@", self.rowPool);
-    NSLog(@"Index of previous row in ordered row stack = %lu", indexOfPreviousRowInOrderedRowStack);
-    NSLog(@"Index of next row in ordered row stack = %lu", indexOfNextRowInOrderedRowStack);
+//    NSLog(@"Index of previous row in ordered row stack = %lu", indexOfPreviousRowInOrderedRowStack);
+//    NSLog(@"Index of next row in ordered row stack = %lu", indexOfNextRowInOrderedRowStack);
     
     NSRange rangeOfInterest = NSRangeFromString([NSString stringWithFormat:@"%lu, %lu", indexOfPreviousRowInOrderedRowStack+1, indexOfNextRowInOrderedRowStack-indexOfPreviousRowInOrderedRowStack-1]);
     
@@ -187,27 +187,27 @@ typedef enum {
     // (In the WOOT research paper, this list is denoated by S'.)
     NSArray *rowsBetweenPreviousRowAndNextRow = [self.orderedRowStack subarrayWithRange:rangeOfInterest];
     
-    NSLog(@"S' = %@", rowsBetweenPreviousRowAndNextRow);
+//    NSLog(@"S' = %@", rowsBetweenPreviousRowAndNextRow);
     
     // TODO: Check if the S' array is empty. And if so, insert the character between previousID and nextID
     NSUInteger numberOfrowsBetweenPreviousRowAndNextRow = rowsBetweenPreviousRowAndNextRow.count;
     if (numberOfrowsBetweenPreviousRowAndNextRow == 0)
     {
-        NSLog(@"numberOfrowsBetweenPreviousRowAndNextRow = 0… about to insert row.");
+//        NSLog(@"numberOfrowsBetweenPreviousRowAndNextRow = 0… about to insert row.");
         
         // Insert row into the ordered row stack.
         Row *rowToInsertRowAt = self.rowPool[nextID.stringValue];
         NSUInteger indexToInsertTheRow = [self.orderedRowStack indexOfObject:rowToInsertRowAt];
-        NSLog(@"Index to insert the row: %lu", indexToInsertTheRow);
+//        NSLog(@"Index to insert the row: %lu", indexToInsertTheRow);
         [self.orderedRowStack insertObject:row atIndex:indexToInsertTheRow];
         
-        NSLog(@"Inserted row %@ at index: %lu", row, indexToInsertTheRow);
-        NSLog(@"Ordered row stack: %@", self.orderedRowStack);
+//        NSLog(@"Inserted row %@ at index: %lu", row, indexToInsertTheRow);
+//        NSLog(@"Ordered row stack: %@", self.orderedRowStack);
         
         return;
     }
     
-    NSLog(@"About to filter S'");
+//    NSLog(@"About to filter S'");
     
     // (In the WOOT research paper, this array is denoted by L.)
     //
@@ -222,12 +222,12 @@ typedef enum {
     
     for (Row *currentRow in rowsBetweenPreviousRowAndNextRow)
     {
-        NSLog(@"About to filter row: %@", currentRow);
+//        NSLog(@"About to filter row: %@", currentRow);
         
         // We get the current previous and next rows from the row pool and don’t use the currentRow.previousID and
         // currentRow.nextID objects directly as they may not be the same ID object if received from a remote source.
-        NSLog(@"Current Previous Row ID: %@", currentRow.previousID.stringValue);
-        NSLog(@"Current Next Row ID: %@", currentRow.nextID.stringValue);
+//        NSLog(@"Current Previous Row ID: %@", currentRow.previousID.stringValue);
+//        NSLog(@"Current Next Row ID: %@", currentRow.nextID.stringValue);
         
         Row *currentPreviousRow = self.rowPool[currentRow.previousID.stringValue];
         Row *currentNextRow = self.rowPool[currentRow.nextID.stringValue];
@@ -235,16 +235,16 @@ typedef enum {
         NSUInteger indexOfCurrentPreviousRowInOrderedRowStack = [self.orderedRowStack indexOfObject:currentPreviousRow];
         NSUInteger indexOfCurrentNextRowInOrderedRowStack = [self.orderedRowStack indexOfObject:currentNextRow];
         
-        NSLog(@"Index of current previus row in ordered row stack: %lu", indexOfCurrentPreviousRowInOrderedRowStack);
-        NSLog(@"Index of current next row in ordered row stack: %lu", indexOfCurrentNextRowInOrderedRowStack);
+//        NSLog(@"Index of current previus row in ordered row stack: %lu", indexOfCurrentPreviousRowInOrderedRowStack);
+//        NSLog(@"Index of current next row in ordered row stack: %lu", indexOfCurrentNextRowInOrderedRowStack);
         
         // Only include the current row if its previous row ID is less than or equal to the row-being-integrated’s
         // previous row ID and if its next row ID is greater than or equal to the row‐being‐integrated’s next row ID. 
         BOOL previousOrderingCheck = indexOfCurrentPreviousRowInOrderedRowStack <= indexOfPreviousRowInOrderedRowStack;
         BOOL nextOrderingCheck = indexOfCurrentNextRowInOrderedRowStack >= indexOfNextRowInOrderedRowStack;
         
-        NSLog(@"Previous ordering check: %lu <= %lu = %@", indexOfCurrentPreviousRowInOrderedRowStack, indexOfPreviousRowInOrderedRowStack, previousOrderingCheck ? @"YES" : @"NO");
-        NSLog(@"Next ordering check: %lu <= %lu = %@", indexOfCurrentNextRowInOrderedRowStack, indexOfNextRowInOrderedRowStack, nextOrderingCheck ? @"YES" : @"NO");
+//        NSLog(@"Previous ordering check: %lu <= %lu = %@", indexOfCurrentPreviousRowInOrderedRowStack, indexOfPreviousRowInOrderedRowStack, previousOrderingCheck ? @"YES" : @"NO");
+//        NSLog(@"Next ordering check: %lu <= %lu = %@", indexOfCurrentNextRowInOrderedRowStack, indexOfNextRowInOrderedRowStack, nextOrderingCheck ? @"YES" : @"NO");
         
         // This row statisfies the ordering rules. Add it to the resulting array.
         if (previousOrderingCheck && nextOrderingCheck)
@@ -264,27 +264,27 @@ typedef enum {
     // TODO: Create test case for when there is more than one row.
     NSInteger i = 1;
     NSInteger indexOfLastRowInFilteredArray = filteredArray.count - 1;
-    NSLog(@"Index of last row in array: %li", indexOfLastRowInFilteredArray);
-    NSLog(@"%li < %li ? %@", i, indexOfLastRowInFilteredArray, i < indexOfLastRowInFilteredArray ? @"YES": @"NO");
-    NSLog(@"Getting the index to recurse on…");
-    NSLog(@"About to check that %@ is less than %@", ((Row *)filteredArray[i]).selfID, row.selfID);
+//    NSLog(@"Index of last row in array: %li", indexOfLastRowInFilteredArray);
+//    NSLog(@"%li < %li ? %@", i, indexOfLastRowInFilteredArray, i < indexOfLastRowInFilteredArray ? @"YES": @"NO");
+//    NSLog(@"Getting the index to recurse on…");
+//    NSLog(@"About to check that %@ is less than %@", ((Row *)filteredArray[i]).selfID, row.selfID);
     while ( (i < indexOfLastRowInFilteredArray) && [self isID:((Row *)filteredArray[i]).selfID lessThanID:row.selfID] )
     {
-        NSLog(@"It is less, incremening i…");
+//        NSLog(@"It is less, incremening i…");
         i++;
-        NSLog(@"i = %lu",i);
-        NSLog(@"About to check that %@ is less than %@", ((Row *)filteredArray[i]).selfID, row.selfID);
+//        NSLog(@"i = %lu",i);
+//        NSLog(@"About to check that %@ is less than %@", ((Row *)filteredArray[i]).selfID, row.selfID);
     }
-    NSLog(@"It is not less! Stopped.");
+//    NSLog(@"It is not less! Stopped.");
     
     GloballyUniqueID *newPreviousID = ((Row *)filteredArray[i-1]).selfID;
     GloballyUniqueID *newNextID = ((Row *)filteredArray[i]).selfID;
     
-    NSLog(@"New Previous ID = %@", newPreviousID);
-    NSLog(@"New Next ID = %@", newNextID);
-    NSLog(@"About to recurse…");
+//    NSLog(@"New Previous ID = %@", newPreviousID);
+//    NSLog(@"New Next ID = %@", newNextID);
+//    NSLog(@"About to recurse…");
     
-    // DEBUG
+    // TODO: Remove — DEBUG
     if (filteredArray.count == 2) {
         if ([((Row *)filteredArray[0]).selfID isEqual:self.firstRow.selfID] && [((Row *)filteredArray[1]).selfID isEqual: self.lastRow.selfID]) {
             NSAssert(FALSE, @"ENDLESS LOOP!!!!");
@@ -308,7 +308,7 @@ typedef enum {
     
     self.rowPool[row.selfID.stringValue] = row;
     
-    NSLog(@"Inserted row with ID %@ into the row pool.", row.selfID.stringValue);
+//    NSLog(@"Inserted row with ID %@ into the row pool.", row.selfID.stringValue);
     
     // Integrate the row into the ordered row list
     [self integrateRow:row betweenID:row.previousID andID:row.nextID];
@@ -371,8 +371,8 @@ typedef enum {
         nextRowID = self.lastRow.selfID;
     }
 
-    NSLog(@"Previous row ID: %@", previousRowID.stringValue);
-    NSLog(@"Next row ID: %@", nextRowID.stringValue);
+//    NSLog(@"Previous row ID: %@", previousRowID.stringValue);
+//    NSLog(@"Next row ID: %@", nextRowID.stringValue);
     
     // Create the new row and add it to the row pool.
     GloballyUniqueID *rowID = [self nextRowID];
